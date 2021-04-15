@@ -187,10 +187,8 @@ while SB==0:
         a = a_list[i]
         # 만약 외계인이 ss와 부딛친다면 꺼짐
         if crash(a,ss) is True:
-            time.sleep(3)
+            time.sleep(1) # 1초뒤에 꺼지도록 함
             SB=1 # while문이 종료되도록 하는 key
-            
-
 
 
     # 4-4 그리기
