@@ -36,7 +36,7 @@ class obj :
         screen.blit(self.img,(self.x,self.y))
 
 ss=obj() # 객체 생성
-ss.put_img("/Users/byeonghyeon/Documents/GitHub/2021-1-OSSPC-MUHIRYO-4/2016112568_ByeongHyeon/Image/pngtree-airplane-vector-illustration-png-image_332890.jpeg")
+ss.put_img("SourceCode/Image/pngtree-airplane-vector-illustration-png-image_332890.jpeg")
 ss.change_size(50,80) # 그림의 크기 조정
 ss.x = round(size[0]/2- ss.sx/2)
 ss.y = size[1] -ss.sy
@@ -100,7 +100,7 @@ while SB==0:
     
     if space_go ==True and k%6 ==0: # k%6으로 미사일의 발생 비율을 1/6로 낮춤
         mm = obj() # mm이라는 객체 생성
-        mm.put_img("/Users/byeonghyeon/Documents/GitHub/2021-1-OSSPC-MUHIRYO-4/2016112568_ByeongHyeon/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         mm.change_size(5,15) # 그림의 크기 조정
         mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
         mm.y = ss.y - mm.sy -10 # 총알의 위치 = 비행기위치 - 총알의 y 크기
@@ -114,13 +114,13 @@ while SB==0:
         m.y -= m.move
         if m.y < -m.sx: # 미사일의 사이즈 만큼 나갔을때 지워준다!
             d_list.append(i) # 살생부
-
+    d_list.reverse() # 앞에서 부터 지우면 앞당겨와져서 오류가 일어나기떄문에 reverse해주고 지워주자
     for d in d_list:
         del m_list[d]
 
     if random.random()>0.98: # 약 2프로의 확률
         aa=obj() # 객체 생성
-        aa.put_img("/Users/byeonghyeon/Documents/GitHub/2021-1-OSSPC-MUHIRYO-4/2016112568_ByeongHyeon/Image/png-clipart-alien-alien.png")
+        aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
         aa.change_size(40,40) # 그림의 크기 조정
         aa.x = random.randrange(0,size[0]-aa.sx - round(ss.sx/2)) # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.y = 10  
@@ -135,6 +135,7 @@ while SB==0:
         if a.y>=size[1]: # a가 화면밖으로 나갔다면 지워준다.
             d_list.append(i)
     # 메모리 효율을 위해 삭제시켜줌
+    d_list.reverse() # 앞에서 부터 지우면 앞당겨와져서 오류가 일어나기떄문에 reverse해주고 지워주자
     for d in d_list:
         del a_list[d]
     
