@@ -145,13 +145,9 @@ while SB==0:
         m.show()
     for a in a_list:
         a.show()
-
-
+        
     # 4-5. 업데이트
     pygame.display.flip() # 그려왔던데 화면에 업데이트가 됨
 
 # 5. 게임종료
 pygame.quit()
-
-
-
