@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from datetime import datetime
 
 # 1. 게임 초기화
 pygame.init()
@@ -41,7 +42,7 @@ def crash(a ,b):
     else : return False
 
 so = obj()
-so.put_img("so7.png")
+so.put_img("SourceCode\Image\so7.png")
 so.change_size(200,200)
 so.x = round(size[0]/2 - so.sx/2)
 so.y = size[1] - so.sy - 100
@@ -63,8 +64,26 @@ so_y = size[1] - so_sy - 15
 black = (0,0,0)
 white = (255,255,255)
 k = 0
+GO = 0
+kill = 0
+loss = 0
+
+# 4-0. 게임 시작 대기 화면
+SB = 0
+while SB == 0:
+    clock.tick(60)
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                SB = 1
+    screen.fill(black)
+    font = pygame.font.Font('Fonts/ariblk.ttf',15)
+    text = font.render('PRESS SPACE KEY TO START THE GAME', True, (255,255,255))
+    screen.blit(text, (40, round(size[1]/2-50)))
+    pygame.display.flip()
 
 # 4. 메인 이벤트
+start_time = datetime.now()
 SB = 0
 while SB == 0:
 
@@ -90,7 +109,11 @@ while SB == 0:
                 right_go = False
             elif event.key == pygame.K_SPACE:
                 space_go = False
+
     # 4-3 입력, 시간에 따른 변화
+    now_time = datetime.now()
+    delta_time = round((now_time - start_time).total_seconds())
+
     if left_go == True:
         so.x -= so.move
         if so.x <= 0:
@@ -102,7 +125,7 @@ while SB == 0:
     
     if space_go == True and k % 6 == 0:
         mm = obj()
-        mm.put_img("ddong.png")
+        mm.put_img("SourceCode/Image/ddong.png")
         mm.change_size(30,30)
         mm.x = round(so.x + so.sx/2 - mm.sx/2)
         mm.y = so.y - mm.sy - 10
@@ -121,7 +144,7 @@ while SB == 0:
 
     if random.random() > 0.98:
         aa = obj( )
-        aa.put_img("so2.jpg")
+        aa.put_img("SourceCode\Image\so2.jpg")
         aa.change_size(90,90 )
         aa.x = random.randrange(0, size[0] - aa.sx - round(so.sx/2))
         aa.y = 10
@@ -135,6 +158,7 @@ while SB == 0:
             d_list.append(i)
     for d in d_list:
         del a_list[d]
+        loss += 1
     
     dm_list = []
     da_list = []
@@ -152,12 +176,13 @@ while SB == 0:
         del m_list[dm]
     for da in da_list:
         del a_list[da]
+        kill += 1
 
     for i in range(len(a_list)):
         a = a_list[i]
         if crash(a, so) == True:
             SB = 1
-            time.sleep(1)
+            GO = 1
 
     # 4-4 그리기
     screen.fill(white)
@@ -167,8 +192,25 @@ while SB == 0:
     for a in a_list:
         a.show()
 
+    font = pygame.font.Font('Fonts/ariblk.ttf',20)
+    text_kill = font.render('killed: {} loss: {}'.format(kill, loss), True, (255,255,0))
+    screen.blit(text_kill, (10, 5))
+
+    text_time = font.render('time : {}'.format(delta_time), True, (0,00,0))
+    screen.blit(text_time, (size[0]-100, 5))
+
+
     # 4-5 업데이트
     pygame.display.flip()
 
 # 5. 게임종료
+while GO == 1:
+    clock.tick(60)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            GO = 0
+    font = pygame.font.Font('Fonts/ariblk.ttf',40)
+    text = font.render('GAME OVER', True, (255,0,0))
+    screen.blit(text, (80, round(size[1]/2-80)))
+    pygame.display.flip()
 pygame.quit()
