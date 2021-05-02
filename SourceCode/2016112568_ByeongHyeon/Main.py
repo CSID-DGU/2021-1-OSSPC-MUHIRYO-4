@@ -1,4 +1,8 @@
 import pygame
+import random
+import time
+from datetime import datetime
+
 
 
 # 1. 게임초기화
@@ -25,3 +29,4 @@ SB=0
 # 4-4 그리기
 # 4-5 업데이트
 # 5. 게임종료
+pygame.quit()
