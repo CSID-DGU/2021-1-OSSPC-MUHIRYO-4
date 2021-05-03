@@ -10,7 +10,8 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [400,900]
+size = [600,900]
+# size = [400,900]
 screen = pygame.display.set_mode(size)
 
 title = "My Game"
@@ -57,6 +58,10 @@ def crash(a,b):
             
     else:
         return False
+
+def crash2(a,b):
+    # 미사일이 두번 맞았을때 사라지게끔!하는 함수
+    pass
 
 
 
@@ -123,7 +128,7 @@ while SB==0:
 
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",15)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(40,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(130,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -342,10 +347,11 @@ while SB==0:
         m.show()
     for a in a_list:
         a.show()
+    # 점수 산정
+    score = (kill*5 - loss*10)
     
-
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
-    text_kill = font.render("Killed : {} Loss : {}".format(kill,loss),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
+    text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     # 현재 흘러간 시간
@@ -367,7 +373,7 @@ while GO==1:
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",40)
     text_kill = font.render("GAME OVER",True,(255,0,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(80,round((size[1]/2)-70))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(150,round((size[1]/2)-70))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
