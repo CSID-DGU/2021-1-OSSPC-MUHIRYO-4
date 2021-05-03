@@ -58,11 +58,53 @@ def crash(a,b):
     else:
         return False
 
+# 객체 생성
+ss = obj()
+# 우리들이 움직여야할 물체
+ss.put_img()
+# 그림의 크기를 조정
+ss.change_size(50,80)
+# 비행체의 위치를 하단의 중앙으로 바꾸기위해!
+# x값의 절반에서 피사체의 길이의 절반만큼 왼쪽으로 이동해야 정확히 가운데임
+ss.x = round(size[0]/2 - ss.sx/2)
+# 맨 밑에서 피사체의 y길이만큼 위로 올라와야함
+ss.y = size[1] - ss.sy
+# 비행체가 움직이는 속도를 결정함
+ss.move = 5
+
+k=0
+left_go = False
+right_go = False
+space_go = False
+
+# 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
+m_list = []
+# 피사체 출현시 피사체 객체가 저장되는 리스트 공산
+a_list = []
+
+# RGB
+black =(0,0,0)
+white = (255,255,255)
+
+# 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
+kill = 0 
+# 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
+loss = 0 
+
+# Game Over
+GO = 0 
+
+
+#4-0 게임 대기회면
 
 
 
 
-# 4-0. 메인 이벤트
+
+
+# 4. 메인 이벤트
+# 코드를 첫 실행한 시간 저장
+start_time = datetime.now()
 SB=0
 while SB==0:
 
@@ -93,8 +135,35 @@ while SB==0:
             elif event.key == pygame.K_SPACE:
                 space_go = False
         
+
     
-    # 4-3. 입력과 시간에 따른 변화 
+        # 4-3. 입력과 시간에 따른 변화 
+        now_time = datetime.now()
+        # 코드실행 시점에서 현재시간과릐 차이를 초로 바꿈
+        delta_time = (now_time - start_time).total_seconds()
+
+
+        # 버튼을 꾹 길게 눌렀을때 움직이게 하기
+        # 왼쪽 방향키를 눌렀을 때
+        if left_go == True:
+            ss.x -= ss.move
+            # 물체가 왼쪽 끝 경계값으로 이동하면 더이상 나가지 않게끔 만듬!
+            # 배경이 뭐냐에 따라 달라질 듯 !
+            if ss.x < 0:
+                # 더 이상 나가지 못하도록 0 으로 막아줌
+                ss.x = 0 
+        # 오른쪽 방향키를 눌렀을 때
+        elif right_go == True:
+            ss.x += ss.move
+            # 오른쪽 끝에서 비행선의 가로크기만큼 빼줘야한다
+            if ss.x >= size[0] - ss.sx:
+                # 더 이상 오른쪽 바깥으로 못나가게 오른쪽 끝값으로 초기화
+                ss.x = size[0] - ss.sx
+
+
+
+
+
     # 4-4. 그리기 
 
 
