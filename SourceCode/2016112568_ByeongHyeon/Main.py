@@ -134,11 +134,19 @@ while SB==0:
         if event.type == pygame.QUIT: # x버튼을 눌렀을때!
             SB=1 # SB 가 1이되면 while문을 빠져나오게 된다!
         if event.type == pygame.KEYDOWN: # 어떤 키를 눌렀을때!(키보드가 눌렸을 때)
-            # 키를 누그로있는 상태 : True
+            # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
+                # if event.key == pygame.K_UP:
+                #     left_up_go = True
+                # elif event.key == pygame.K_DOWN:
+                #     left_down_go = True
                 left_go = True
             elif event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
+                # if event.key == pygame.K_UP:
+                #     left_up_go = True
+                # elif event.key == pygame.K_DOWN:
+                #     left_down_go = True
                 right_go = True
             elif event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
                 space_go = True
