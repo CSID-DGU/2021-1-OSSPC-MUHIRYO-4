@@ -3,6 +3,8 @@ import random
 import time
 from datetime import datetime
 
+# sx, sy => 피사체의 가로길이, 세로길리
+# x, y => 비행기의 가로길이, 세로길이
 
 
 # 1. 게임초기화
@@ -17,23 +19,44 @@ pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
 clock = pygame.time.Clock()
 
-#RGB 값 설정
-black = (0,0,0)
-white = (255,255,255)
-k=0
+
 
 class obj:
     def __init__(self):
         self.x =0
         self.y=0
         self.move =0
+
+    def put_img(self,address):
+        # png파일 일때
+        # convert해줘야하는 문제가 있기때문에
+        if address[-3::] == "png":
+            self.img = pygame.image.load(address).convert_alpha()    
+        else: 
+            self.img = pygame.image.load(address)
+        self.sx, self.sy = self.img.get_size()
+
+    # 피사체의 그림 조정
+    def change_size(self,sx,sy):
+        self.img = pygame.transform.scale(self.img,(sx,sy)) # 그림의 크기를 조정한다.
+        self.sx, self.sy = self.img.get_size()
     
+
+    def show(self):
+        screen.blit(self.img,(self.x,self,y))
+
 
 # 충돌이 일어났는지 확인하는 함수!
 # return 값이 boolean 타입임
 def crash(a,b):
     # 여기 범위 안에있으면 충돌이 일어났다고 판단함!
-    if(a.x-b.sx <= b.sx) and (b.x)
+    if(a.x-b.sx <= b.sx) and (b.x <= a.x + a.sx):
+        if(a.y - b.sy <= b.y) and (b.y <= a.y + a.sy):
+            return True
+        else:
+            return False
+    else:
+        return False
 
 
 
