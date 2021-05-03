@@ -58,6 +58,8 @@ def crash(a,b):
     else:
         return False
 
+
+
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
@@ -83,6 +85,11 @@ right_down_go = False
 left_down_go = False
 space_go = False
 
+# 미사일의 스피드
+m_speed = 30
+number_for_m_speed = 1
+killed = 0
+
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
 m_list = []
 # 피사체 출현시 피사체 객체가 저장되는 리스트 공산
@@ -96,6 +103,9 @@ white = (255,255,255)
 kill = 0 
 # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
 loss = 0 
+
+# 현재 내가 획득한 점수
+score = 0
 
 # Game Over
 GO = 0 
@@ -213,9 +223,17 @@ while SB==0:
     
         
     # 미사일의 속도 조정
+    # 미사일의 스피드가 5수준이하로 떨어지지 않게끔
+    # 킬수와 잃은수의 차이가 10씩 날때마다 speed증가
+    if (kill - loss) >= number_for_m_speed*10:
+        if m_speed >= 10:
+            number_for_m_speed+=1
+            m_speed -= 5
+    
+
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
-    # k%6 으로 미사일의 발생 비율을 1/6으로 낮춤!
-    if (space_go == True) and k%6 == 0:
+    # k%6 이면 미사일의 발생 확률을 1/6으로 낮춤!
+    if (space_go == True) and k%m_speed == 0:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
@@ -253,7 +271,9 @@ while SB==0:
         aa = obj()
         aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
         # 피사체의 그림 크기 조정
-        aa.change_size(40,40)
+        random_size = random.randrange(20,40)
+        # 정사각형 모양의 피사체
+        aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
