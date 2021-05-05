@@ -95,6 +95,10 @@ m_speed = 30
 number_for_m_speed = 1
 killed = 0
 
+# 미사일의 크기 조정
+min_size = 20
+max_size = 40
+
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
 m_list = []
 # 피사체 출현시 피사체 객체가 저장되는 리스트 공산
@@ -276,7 +280,7 @@ while SB==0:
         aa = obj()
         aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
         # 피사체의 그림 크기 조정
-        random_size = random.randrange(20,40)
+        random_size = random.randrange(min_size,max_size)
         # 정사각형 모양의 피사체
         aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
