@@ -84,6 +84,7 @@ left_go = False
 right_go = False
 up_go = False
 down_go = False
+
 right_up_go = False
 left_up_go = False
 right_down_go = False
@@ -232,6 +233,15 @@ while SB==0:
         if ss.y >= size[1] - ss.sy:
             # 더이상 나가지 못하게 위치값 고정
             ss.y = size[1] - ss.sy
+    
+    # if right_up_go == True:
+    #     ss.y -= ss.move
+    #     ss.x += ss.move
+    #     if ss.x >= size[0] - ss.sx:
+    #         ss.x = size[0] - ss.sx
+    #     if ss.y < 0:
+    #         ss.y = 0
+
     # 미사일의 속도 조정
     # 미사일의 스피드가 5수준이하로 떨어지지 않게끔
     # 킬수와 잃은수의 차이가 10씩 날때마다 speed증가
