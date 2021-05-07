@@ -161,20 +161,21 @@ while SB==0:
                 # elif event.key == pygame.K_DOWN:
                 #     left_down_go = True
                 left_go = True
-            elif event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
+            if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
                 # if event.key == pygame.K_UP:
-                #     left_up_go = True
+                #     right_up_go = True
                 # elif event.key == pygame.K_DOWN:
-                #     left_down_go = True
+                #     right_down_go = True
                 right_go = True
-            elif event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
+            if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
                 space_go = True
                 # 속도를 1/6으로 낮췄는데 누를때마다도 한번씩 발사하고싶어서 누르면 k=0으로 초기화시킴 -> while문 조건 통과하기위해
                 k=0
-            elif event.key == pygame.K_UP:
+            if event.key == pygame.K_UP :
                 up_go = True
-            elif event.key == pygame.K_DOWN:
+            if event.key == pygame.K_DOWN:
                 down_go = True
+            
             
             
             
@@ -216,7 +217,9 @@ while SB==0:
             # 더 이상 오른쪽 바깥으로 못나가게 오른쪽 끝값으로 초기화
             ss.x = size[0] - ss.sx
     # 윗 방향키를 눌렀을때
-    elif up_go == True:
+    # 윗 방향키를 elif에서 if로 시작
+    # 좌우와 상하가 독립된 상태로 구분됨
+    if up_go == True:
         ss.y -= ss.move
         # 게임화면 위쪽 화면으로 나가는 경우
         if ss.y < 0:
@@ -229,8 +232,6 @@ while SB==0:
         if ss.y >= size[1] - ss.sy:
             # 더이상 나가지 못하게 위치값 고정
             ss.y = size[1] - ss.sy
-    
-        
     # 미사일의 속도 조정
     # 미사일의 스피드가 5수준이하로 떨어지지 않게끔
     # 킬수와 잃은수의 차이가 10씩 날때마다 speed증가
