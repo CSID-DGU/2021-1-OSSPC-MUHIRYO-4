@@ -61,6 +61,7 @@ def crash(a,b):
 
 def crash2(a,b):
     # 미사일이 두번 맞았을때 사라지게끔!하는 함수
+    
     pass
 
 
