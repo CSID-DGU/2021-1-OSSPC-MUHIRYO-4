@@ -108,6 +108,7 @@ a_list = []
 # RGB
 black = (0,0,0)
 white = (255,255,255)
+background_color = (210,105,30)
 
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
 kill = 0 
