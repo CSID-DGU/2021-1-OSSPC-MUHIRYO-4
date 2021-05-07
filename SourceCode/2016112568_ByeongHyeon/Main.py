@@ -356,7 +356,7 @@ while SB==0:
             GO = 1
 
     # 4-4. 그리기 
-    screen.fill(black)
+    screen.fill(background_color)
     ss.show()
     for m in m_list:
         m.show()
