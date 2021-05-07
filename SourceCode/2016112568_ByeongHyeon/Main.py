@@ -61,6 +61,7 @@ def crash(a,b):
 
 def crash2(a,b):
     # 미사일이 두번 맞았을때 사라지게끔!하는 함수
+    
     pass
 
 
@@ -108,6 +109,7 @@ a_list = []
 # RGB
 black = (0,0,0)
 white = (255,255,255)
+background_color = (210,105,30)
 
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
 kill = 0 
@@ -249,7 +251,8 @@ while SB==0:
         if m_speed >= 10:
             number_for_m_speed+=1
             m_speed -= 5
-    
+
+
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
     # k%6 이면 미사일의 발생 확률을 1/6으로 낮춤!
@@ -297,7 +300,7 @@ while SB==0:
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
-        aa.move = 2
+        aa.move = 2 + (score/100)
         a_list.append(aa)
 
     # 살생부 리스트 초기화
@@ -306,7 +309,7 @@ while SB==0:
         a = a_list[i]
         a.y += a.move
         # 외계인이 화면 밖으로 나갔다면 지워준다.
-        if a.y >= size[1]:    
+        if a.y >= size[1]:
             d_list.append(i)
 
     # 메모리 효율을 위해 삭제
@@ -356,14 +359,14 @@ while SB==0:
             GO = 1
 
     # 4-4. 그리기 
-    screen.fill(black)
+    screen.fill(background_color)
     ss.show()
     for m in m_list:
         m.show()
     for a in a_list:
         a.show()
     # 점수 산정
-    score = (kill*5 - loss*10)
+    score = (kill*5 - loss*8)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
@@ -405,3 +408,9 @@ pygame.quit()
 # screen.blit(text,position)
 
 # 위 코드 세줄이 한 묶음으로 다니게 될것임
+
+# 점수가 0점이면 게임 종료
+# 점수가 줄어드는것에 비례하여 미사일속도가 줄어듬
+# score 가 10점 증가함에따라 피사체 속도 0.01 증가 
+
+# 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
