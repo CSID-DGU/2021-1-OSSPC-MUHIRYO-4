@@ -288,8 +288,8 @@ while SB==0:
     for d in d_list:
         del m_list[d]
         
-
-    if random.random() > 0.98:
+    
+    if random.random() > 0.98-(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
@@ -300,7 +300,7 @@ while SB==0:
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
-        aa.move = 2 + (score/100)
+        aa.move = 2 + (score//300)
         a_list.append(aa)
 
     # 살생부 리스트 초기화
