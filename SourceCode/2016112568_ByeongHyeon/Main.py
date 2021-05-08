@@ -98,7 +98,7 @@ number_for_m_speed = 1
 killed = 0
 
 # 미사일의 크기 조정
-min_size = 20
+min_size = 30
 max_size = 40
 
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
@@ -110,7 +110,7 @@ a_list = []
 black = (0,0,0)
 white = (255,255,255)
 background_color = (210,105,30)
-
+background_image_desert=1 = pygame.image.load()
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
 kill = 0 
 # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
@@ -245,7 +245,7 @@ while SB==0:
     #         ss.y = 0
 
     # 미사일의 속도 조정
-    m_speed = 6-(score/100)
+    m_speed = 30-(score//40)
 
 
 
@@ -282,8 +282,11 @@ while SB==0:
     d_list.reverse()
     for d in d_list:
         del m_list[d]
-        
     
+    # score 100점 마다 피사체의 사이즈 1씩 감소
+    min_size -= score//100
+
+    # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
     if random.random() > 0.98-(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
@@ -411,7 +414,7 @@ pygame.quit()
 
 
 
-# 점수가 줄어드는것에 비례하여 미사일속도가 줄어듬
-# score 가 10점 증가함에따라 피사체 속도 0.01 증가 
+
+
 
 # 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
