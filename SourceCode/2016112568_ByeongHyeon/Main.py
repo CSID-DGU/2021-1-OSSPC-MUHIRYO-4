@@ -10,7 +10,7 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [900,900]
+size = [900,1100]
 # size = [400,900]
 screen = pygame.display.set_mode(size)
 
@@ -360,7 +360,7 @@ while SB==0:
 
     # 4-4. 그리기 
     # screen.fill(background_color)
-    screen.blit(background_image_desert,(0,0))
+    screen.blit(background_image_desert,(-80,0))
     
 
     ss.show()
