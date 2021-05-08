@@ -42,7 +42,7 @@ def crash(a ,b):
     else : return False
 
 so = obj()
-so.put_img("SourceCode\Image\so7.png")
+b1 = so.put_img("SourceCode\Image\so7.png")
 so.change_size(200,200)
 so.x = round(size[0]/2 - so.sx/2)
 so.y = size[1] - so.sy - 100
@@ -77,7 +77,7 @@ while SB == 0:
             if event.key == pygame.K_SPACE:
                 SB = 1
     screen.fill(black)
-    font = pygame.font.Font('Fonts/ariblk.ttf',15)
+    font = pygame.font.Font(None, 15)
     text = font.render('PRESS SPACE KEY TO START THE GAME', True, (255,255,255))
     screen.blit(text, (40, round(size[1]/2-50)))
     pygame.display.flip()
@@ -144,8 +144,8 @@ while SB == 0:
 
     if random.random() > 0.98:
         aa = obj( )
-        aa.put_img("SourceCode\Image\so2.jpg")
-        aa.change_size(90,90 )
+        b2 = aa.put_img("SourceCode\Image\so2.jpg")
+        aa.change_size(90,90)
         aa.x = random.randrange(0, size[0] - aa.sx - round(so.sx/2))
         aa.y = 10
         aa.move = 2
@@ -177,7 +177,6 @@ while SB == 0:
     for da in da_list:
         del a_list[da]
         kill += 1
-
     for i in range(len(a_list)):
         a = a_list[i]
         if crash(a, so) == True:
@@ -192,7 +191,7 @@ while SB == 0:
     for a in a_list:
         a.show()
 
-    font = pygame.font.Font('Fonts/ariblk.ttf',20)
+    font = pygame.font.Font(None,20)
     text_kill = font.render('killed: {} loss: {}'.format(kill, loss), True, (255,255,0))
     screen.blit(text_kill, (10, 5))
 
