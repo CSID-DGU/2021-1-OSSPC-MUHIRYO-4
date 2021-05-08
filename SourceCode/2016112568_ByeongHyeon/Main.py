@@ -93,7 +93,7 @@ left_down_go = False
 space_go = False
 
 # 미사일의 스피드
-m_speed = 30
+m_speed = 0 # 초기화
 number_for_m_speed = 1
 killed = 0
 
@@ -245,12 +245,7 @@ while SB==0:
     #         ss.y = 0
 
     # 미사일의 속도 조정
-    # 미사일의 스피드가 5수준이하로 떨어지지 않게끔
-    # 킬수와 잃은수의 차이가 10씩 날때마다 speed증가
-    if (kill - loss) >= number_for_m_speed*10:
-        if m_speed >= 10:
-            number_for_m_speed+=1
-            m_speed -= 5
+    m_speed = 6-(score/100)
 
 
 
@@ -357,6 +352,10 @@ while SB==0:
             SB = 1
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
             GO = 1
+    # score 가 0 점이 되면 프로그램 종료
+    if score < 0:
+        SB = 1
+    
 
     # 4-4. 그리기 
     screen.fill(background_color)
@@ -407,9 +406,11 @@ pygame.quit()
 # 3. Surface 화면에 표시
 # screen.blit(text,position)
 
+
 # 위 코드 세줄이 한 묶음으로 다니게 될것임
 
-# 점수가 0점이면 게임 종료
+
+
 # 점수가 줄어드는것에 비례하여 미사일속도가 줄어듬
 # score 가 10점 증가함에따라 피사체 속도 0.01 증가 
 
