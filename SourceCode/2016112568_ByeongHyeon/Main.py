@@ -96,7 +96,7 @@ m_speed = 0 # 초기화
 killed = 0
 
 # 미사일의 크기 조정
-min_size = 30
+min_size = 0
 max_size = 40
 
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
@@ -282,7 +282,7 @@ while SB==0:
         del m_list[d]
     
     # score 100점 마다 피사체의 사이즈 1씩 감소
-    min_size -= score//100
+    min_size = 30 - score//100
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
     if random.random() > 0.98 -(score//100)*0.01:
