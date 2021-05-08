@@ -129,8 +129,8 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
-    screen.fill(background_image_desert)
-
+    screen.fill(background_color)
+    
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",15)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     screen.blit(text_kill,(130,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
@@ -285,7 +285,7 @@ while SB==0:
     min_size -= score//100
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
-    if random.random() > 0.98-(score//100)*0.01:
+    if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
@@ -360,6 +360,8 @@ while SB==0:
 
     # 4-4. 그리기 
     screen.fill(background_color)
+    
+
     ss.show()
     for m in m_list:
         m.show()
