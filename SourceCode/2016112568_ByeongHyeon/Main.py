@@ -65,7 +65,6 @@ def crash2(a,b):
     pass
 
 
-
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
@@ -94,7 +93,6 @@ space_go = False
 
 # 미사일의 스피드
 m_speed = 0 # 초기화
-number_for_m_speed = 1
 killed = 0
 
 # 미사일의 크기 조정
@@ -110,7 +108,7 @@ a_list = []
 black = (0,0,0)
 white = (255,255,255)
 background_color = (210,105,30)
-background_image_desert=1 = pygame.image.load()
+background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
 kill = 0 
 # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
@@ -131,7 +129,7 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
-    screen.fill(black)
+    screen.fill(background_image_desert)
 
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",15)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
