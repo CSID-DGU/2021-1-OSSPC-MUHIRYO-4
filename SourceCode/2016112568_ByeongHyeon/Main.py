@@ -10,7 +10,7 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [600,900]
+size = [900,900]
 # size = [400,900]
 screen = pygame.display.set_mode(size)
 
@@ -144,7 +144,7 @@ while SB==0:
 start_time = datetime.now()
 SB=0
 while SB==0:
-
+    
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(60)
@@ -243,7 +243,7 @@ while SB==0:
     #         ss.y = 0
 
     # 미사일의 속도 조정
-    m_speed = 30-(score//40)
+    m_speed = 30-(score//10)
 
 
 
@@ -359,7 +359,8 @@ while SB==0:
     
 
     # 4-4. 그리기 
-    screen.fill(background_color)
+    # screen.fill(background_color)
+    screen.blit(background_image_desert,(0,0))
     
 
     ss.show()
