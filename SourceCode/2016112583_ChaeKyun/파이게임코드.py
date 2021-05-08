@@ -22,10 +22,7 @@ class obj:
         self.y = 0
         self.move = 0
     def put_img(self, address):
-        if address[-3:] == "png":
             self.img = pygame.image.load(address).convert_alpha()
-        else:
-            self.img = pygame.image.load(address)
             self.sx, self.sy = self.img.get_size()
     def change_size(self, sx, sy):
         self.img = pygame.transform.scale(self.img, (sx,sy))
@@ -42,7 +39,7 @@ def crash(a ,b):
     else : return False
 
 so = obj()
-b1 = so.put_img("SourceCode\Image\so7.png")
+b1 = so.put_img("SourceCode\Image\image1.png")
 so.change_size(200,200)
 so.x = round(size[0]/2 - so.sx/2)
 so.y = size[1] - so.sy - 100
@@ -125,7 +122,7 @@ while SB == 0:
     
     if space_go == True and k % 6 == 0:
         mm = obj()
-        mm.put_img("SourceCode/Image/ddong.png")
+        mm.put_img("SourceCode\Image\pngtree-blue-intelligent-robot-element-illustration-png-image_1154235.jpg")
         mm.change_size(30,30)
         mm.x = round(so.x + so.sx/2 - mm.sx/2)
         mm.y = so.y - mm.sy - 10
@@ -184,7 +181,7 @@ while SB == 0:
             GO = 1
 
     # 4-4 그리기
-    screen.fill(white)
+    screen.fill(black)
     so.show()
     for m in m_list:
         m.show()
@@ -208,7 +205,7 @@ while GO == 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             GO = 0
-    font = pygame.font.Font('Fonts/ariblk.ttf',40)
+    font = pygame.font.Font(None,40)
     text = font.render('GAME OVER', True, (255,0,0))
     screen.blit(text, (80, round(size[1]/2-80)))
     pygame.display.flip()
