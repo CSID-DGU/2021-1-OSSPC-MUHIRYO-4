@@ -289,7 +289,11 @@ while SB==0:
         del m_list[d]
     
     # score 100점 마다 피사체의 사이즈 1씩 감소
-    min_size = 30 - score//100
+    if 30 - score//100 > 20:
+        min_size = 30 - score//100
+    else:
+        min_size = 20
+
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
     if random.random() > 0.98 -(score//100)*0.01:
@@ -366,8 +370,8 @@ while SB==0:
     
 
     # 4-4. 그리기 
-    # screen.fill(background_color)
-    screen.blit(background_image_desert,(0,0))
+    screen.fill(background_color)
+    # screen.blit(background_image_desert,(0,0))
     
 
     ss.show()
@@ -426,3 +430,7 @@ pygame.quit()
 
 
 # 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
+
+
+# score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
+
