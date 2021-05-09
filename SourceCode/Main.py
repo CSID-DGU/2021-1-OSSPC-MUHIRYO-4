@@ -249,7 +249,6 @@ while SB==0:
         m_speed=6
 
     
-    
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
     # k%6 이면 미사일의 발생 확률을 1/6으로 낮춤!
@@ -286,14 +285,9 @@ while SB==0:
         del m_list[d]
     
     # score 100점 마다 피사체의 사이즈 1씩 감소
-    if (30 - score//100)<20:
-        min_size = 20 
-    else:
-        min_size = 30 - score//100
+    min_size = 30 - score//100
 
-
-
-    # score 가 100점 증가함에따라 피사체 발생 개수 0.01확률 증가 
+    # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
     if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
