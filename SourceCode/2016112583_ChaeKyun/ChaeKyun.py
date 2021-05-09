@@ -30,10 +30,10 @@ class obj:
     def put_img(self,address):
         # png파일 일때
         # convert해줘야하는 문제가 있기때문에
-        if address[-3:] == "png":
-            self.img = pygame.image.load(address).convert_alpha()    
-        else: 
-            self.img = pygame.image.load(address)
+        #if address[-3:] == "png":
+        self.img = pygame.image.load(address).convert_alpha()    
+        #else: 
+            #self.img = pygame.image.load(address)
         self.sx, self.sy = self.img.get_size()
 
     # 피사체의 그림 조정
@@ -68,7 +68,7 @@ def crash2(a,b):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/pngtree-airplane-vector-illustration-png-image_332890.jpeg")
+ss.put_img("SourceCode\Image\robot.jpg")
 # 그림의 크기를 조정
 ss.change_size(50,80)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
