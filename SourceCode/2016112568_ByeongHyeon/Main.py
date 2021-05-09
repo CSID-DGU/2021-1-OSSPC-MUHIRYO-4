@@ -10,7 +10,7 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [900,1100]
+size = [600,900]
 # size = [400,900]
 screen = pygame.display.set_mode(size)
 
@@ -131,9 +131,9 @@ while SB==0:
                 SB=1
     screen.fill(background_color)
 
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",30)
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",15)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(100,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨
+    screen.blit(text_kill,(130,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨
 
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -243,10 +243,8 @@ while SB==0:
     #         ss.y = 0
 
     # 미사일의 속도 조정
-    if 30-(score//10)>=6:
-        m_speed = 30-(score//10)
-    else:
-        m_speed=6
+    m_speed = 30-(score//40)
+
 
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
@@ -361,9 +359,8 @@ while SB==0:
 
 
     # 4-4. 그리기
-     screen.fill(background_color)
-    #screen.blit(background_image_desert,(-80,0))
-    
+    screen.fill(background_color)
+
 
     ss.show()
     for m in m_list:
@@ -373,7 +370,7 @@ while SB==0:
     # 점수 산정
     score = (kill*5 - loss*8)
 
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",30)
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨
 
