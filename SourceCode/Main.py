@@ -1,3 +1,6 @@
+#-*- coding: utf-8 -*-
+
+
 import pygame
 import random
 import time
@@ -31,8 +34,8 @@ class obj:
         # png파일 일때
         # convert해줘야하는 문제가 있기때문에
         if address[-3:] == "png":
-            self.img = pygame.image.load(address).convert_alpha()    
-        else: 
+            self.img = pygame.image.load(address).convert_alpha()
+        else:
             self.img = pygame.image.load(address)
         self.sx, self.sy = self.img.get_size()
 
@@ -40,7 +43,7 @@ class obj:
     def change_size(self,sx,sy):
         self.img = pygame.transform.scale(self.img,(sx,sy)) # 그림의 크기를 조정한다.
         self.sx, self.sy = self.img.get_size()
-    
+
 
     def show(self):
         screen.blit(self.img,(self.x,self.y))
@@ -55,13 +58,13 @@ def crash(a,b):
             return True
         else:
             return False
-            
+
     else:
         return False
 
 def crash2(a,b):
     # 미사일이 두번 맞았을때 사라지게끔!하는 함수
-    
+
     pass
 
 
@@ -110,31 +113,31 @@ white = (255,255,255)
 background_color = (210,105,30)
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
-kill = 0 
+kill = 0
 # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
-loss = 0 
+loss = 0
 
 # 현재 내가 획득한 점수
 score = 0
 
 # Game Over
-GO = 0 
+GO = 0
 
 
 # 4-0 게임 시작 대기 화면(작은 event)
 SB=0
 while SB==0:
     clock.tick(60)
-    for event in pygame.event.get(): # 이벤트가 있다면 
+    for event in pygame.event.get(): # 이벤트가 있다면
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
     screen.fill(background_color)
-    
+
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",30)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(100,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
-    
+    screen.blit(text_kill,(100,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨
+
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
 
@@ -144,12 +147,12 @@ while SB==0:
 start_time = datetime.now()
 SB=0
 while SB==0:
-    
-    # 4-1. FPS 설정 
+
+    # 4-1. FPS 설정
     # FPS를 60으로 설정함
     clock.tick(60)
 
-    # 4-2. 각종 입력 감지 
+    # 4-2. 각종 입력 감지
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
         if event.type == pygame.QUIT: # x버튼을 눌렀을때!
             SB=1 # SB 가 1이되면 while문을 빠져나오게 된다!
@@ -176,11 +179,11 @@ while SB==0:
                 up_go = True
             if event.key == pygame.K_DOWN:
                 down_go = True
-            
-            
-            
-            
-        
+
+
+
+
+
         elif event.type == pygame.KEYUP: # 키를 누르는것을 뗐을때!
             if event.key == pygame.K_LEFT: # 키를 뗐다면 그 키가 왼쪽 방향키 인가?
                 left_go = False
@@ -192,10 +195,10 @@ while SB==0:
                 up_go = False
             elif event.key == pygame.K_DOWN:
                 down_go = False
-        
 
-    
-        # 4-3. 입력과 시간에 따른 변화 
+
+
+        # 4-3. 입력과 시간에 따른 변화
     now_time = datetime.now()
         # 코드실행 시점에서 현재시간과릐 차이를 초로 바꿈
     delta_time = (now_time - start_time).total_seconds()
@@ -209,7 +212,7 @@ while SB==0:
         # 배경이 뭐냐에 따라 달라질 듯 !
         if ss.x < 0:
             # 더 이상 나가지 못하도록 0 으로 막아줌
-            ss.x = 0 
+            ss.x = 0
     # 오른쪽 방향키를 눌렀을 때
     elif right_go == True:
         ss.x += ss.move
@@ -233,7 +236,7 @@ while SB==0:
         if ss.y >= size[1] - ss.sy:
             # 더이상 나가지 못하게 위치값 고정
             ss.y = size[1] - ss.sy
-    
+
     # if right_up_go == True:
     #     ss.y -= ss.move
     #     ss.x += ss.move
@@ -248,7 +251,7 @@ while SB==0:
     else:
         m_speed=6
 
-    
+
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
     # k%6 이면 미사일의 발생 확률을 1/6으로 낮춤!
@@ -261,7 +264,7 @@ while SB==0:
         mm.change_size(5,15)
         # 미사일의 x값 (위치)
         mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
-        # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
+        # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기
         mm.y = ss.y - mm.sy - 10
         # 미사일의 움직이는 속도를 결정함
         mm.move = 15
@@ -283,11 +286,11 @@ while SB==0:
     d_list.reverse()
     for d in d_list:
         del m_list[d]
-    
+
     # score 100점 마다 피사체의 사이즈 1씩 감소
     min_size = 30 - score//100
 
-    # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
+    # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가
     if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
@@ -329,7 +332,7 @@ while SB==0:
             if crash(m,a) is True:
                 dm_list.append(i)
                 da_list.append(j)
-    
+
     # 미사일2개와 외계인 1개가 같이 만나는 경우가 있을 수도 있으니까 배제하기위해 중복제거를 해준다.
     dm_list = list(set(dm_list))
     da_list = list(set(da_list))
@@ -359,12 +362,12 @@ while SB==0:
     # score 가 0 점이 되면 프로그램 종료
     if score < 0:
         SB = 1
-    
 
-    # 4-4. 그리기 
+
+    # 4-4. 그리기
     # screen.fill(background_color)
     screen.blit(background_image_desert,(-80,0))
-    
+
 
     ss.show()
     for m in m_list:
@@ -373,15 +376,15 @@ while SB==0:
         a.show()
     # 점수 산정
     score = (kill*5 - loss*8)
-    
+
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",30)
     text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
-    
+    screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨
+
     # 현재 흘러간 시간
     text_time = font.render("Time : {:.2f}".format(delta_time),True,(225,225,225))
     screen.blit(text_time,(size[0]-150,5))
-    
+
     # 4-5. 업데이트
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -391,14 +394,14 @@ while SB==0:
 # 이건 게임오버가 된 상황!
 while GO==1:
     clock.tick(60)
-    for event in pygame.event.get(): # 이벤트가 있다면 
+    for event in pygame.event.get(): # 이벤트가 있다면
         if event.type == pygame.QUIT:
             GO=0
-    
+
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",40)
     text_kill = font.render("GAME OVER",True,(255,0,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(150,round((size[1]/2)-70))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
-    
+    screen.blit(text_kill,(150,round((size[1]/2)-70))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨
+
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
 
