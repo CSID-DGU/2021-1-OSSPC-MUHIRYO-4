@@ -10,7 +10,7 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [600,900]
+size = [900,1100]
 # size = [400,900]
 screen = pygame.display.set_mode(size)
 
@@ -65,7 +65,6 @@ def crash2(a,b):
     pass
 
 
-
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
@@ -93,12 +92,11 @@ left_down_go = False
 space_go = False
 
 # 미사일의 스피드
-m_speed = 30
-number_for_m_speed = 1
+m_speed = 0 # 초기화
 killed = 0
 
 # 미사일의 크기 조정
-min_size = 20
+min_size = 0
 max_size = 40
 
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
@@ -110,7 +108,7 @@ a_list = []
 black = (0,0,0)
 white = (255,255,255)
 background_color = (210,105,30)
-
+background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
 kill = 0 
 # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
@@ -131,11 +129,11 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
-    screen.fill(black)
-
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",15)
+    screen.fill(background_color)
+    
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",30)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(130,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(100,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -146,7 +144,7 @@ while SB==0:
 start_time = datetime.now()
 SB=0
 while SB==0:
-
+    
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(60)
@@ -245,14 +243,12 @@ while SB==0:
     #         ss.y = 0
 
     # 미사일의 속도 조정
-    # 미사일의 스피드가 5수준이하로 떨어지지 않게끔
-    # 킬수와 잃은수의 차이가 10씩 날때마다 speed증가
-    if (kill - loss) >= number_for_m_speed*10:
-        if m_speed >= 10:
-            number_for_m_speed+=1
-            m_speed -= 5
+    if 30-(score//10)>=6:
+        m_speed = 30-(score//10)
+    else:
+        m_speed=6
 
-
+    
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
     # k%6 이면 미사일의 발생 확률을 1/6으로 낮춤!
@@ -287,9 +283,12 @@ while SB==0:
     d_list.reverse()
     for d in d_list:
         del m_list[d]
-        
+    
+    # score 100점 마다 피사체의 사이즈 1씩 감소
+    min_size = 30 - score//100
 
-    if random.random() > 0.98:
+    # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
+    if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
@@ -300,7 +299,7 @@ while SB==0:
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
-        aa.move = 2 + (score/100)
+        aa.move = 2 + (score//300)
         a_list.append(aa)
 
     # 살생부 리스트 초기화
@@ -357,9 +356,16 @@ while SB==0:
             SB = 1
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
             GO = 1
+    # score 가 0 점이 되면 프로그램 종료
+    if score < 0:
+        SB = 1
+    
 
     # 4-4. 그리기 
-    screen.fill(background_color)
+    # screen.fill(background_color)
+    screen.blit(background_image_desert,(-80,0))
+    
+
     ss.show()
     for m in m_list:
         m.show()
@@ -368,7 +374,7 @@ while SB==0:
     # 점수 산정
     score = (kill*5 - loss*8)
     
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",30)
     text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
@@ -407,10 +413,12 @@ pygame.quit()
 # 3. Surface 화면에 표시
 # screen.blit(text,position)
 
+
 # 위 코드 세줄이 한 묶음으로 다니게 될것임
 
-# 점수가 0점이면 게임 종료
-# 점수가 줄어드는것에 비례하여 미사일속도가 줄어듬
-# score 가 10점 증가함에따라 피사체 속도 0.01 증가 
+
+
+
+
 
 # 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
