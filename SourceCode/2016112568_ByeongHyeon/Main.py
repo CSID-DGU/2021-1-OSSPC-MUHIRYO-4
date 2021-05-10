@@ -161,16 +161,8 @@ while SB==0:
             # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
-                # if event.key == pygame.K_UP:
-                #     left_up_go = True
-                # elif event.key == pygame.K_DOWN:
-                #     left_down_go = True
                 left_go = True
             if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
-                # if event.key == pygame.K_UP:
-                #     right_up_go = True
-                # elif event.key == pygame.K_DOWN:
-                #     right_down_go = True
                 right_go = True
             if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
                 space_go = True
