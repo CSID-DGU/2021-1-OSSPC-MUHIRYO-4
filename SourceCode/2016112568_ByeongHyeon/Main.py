@@ -362,8 +362,8 @@ while SB==0:
     
 
     # 4-4. 그리기 
-    screen.fill(background_color)
-    # screen.blit(background_image_desert,(0,0))
+    # screen.fill(background_color)
+    screen.blit(background_image_desert,(0,0))
     
 
     ss.show()
