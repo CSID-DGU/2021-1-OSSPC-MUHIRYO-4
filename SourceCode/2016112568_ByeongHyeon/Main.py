@@ -145,7 +145,7 @@ while SB==0:
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(100,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(size[0]//2-(size[0]//2)//2,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
