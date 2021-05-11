@@ -101,7 +101,8 @@ m_speed = 0 # 초기화
 m_xsize =5
 m_ysize = 15
 
-killed = 0
+# 게임의 FPS
+FPS = 60
 
 # 미사일의 크기 조정
 min_size = 0
@@ -115,7 +116,6 @@ a_list = []
 # RGB
 black = (0,0,0)
 white = (255,255,255)
-background_color = (210,105,30)
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 
 background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
@@ -141,7 +141,7 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
-    screen.fill(background_color)
+    screen.fill(black)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
@@ -159,7 +159,7 @@ while SB==0:
     
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
-    clock.tick(60)
+    clock.tick(FPS)
 
     # 4-2. 각종 입력 감지 
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
@@ -181,10 +181,6 @@ while SB==0:
             if event.key == pygame.K_DOWN:
                 down_go = True
             
-            
-            
-            
-        
         elif event.type == pygame.KEYUP: # 키를 누르는것을 뗐을때!
             if event.key == pygame.K_LEFT: # 키를 뗐다면 그 키가 왼쪽 방향키 인가?
                 left_go = False
@@ -393,16 +389,15 @@ while SB==0:
             SB = 1
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
             GO = 1
+
     # score 가 0 점이 되면 프로그램 종료
     if score < 0:
         SB = 1
     
 
     # 4-4. 그리기 
-    # screen.fill(background_color)
     screen.blit(background_image_desert,(0,0))
     
-
     ss.show()
     for m in m_list:
         m.show()
