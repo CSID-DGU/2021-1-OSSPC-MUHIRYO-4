@@ -10,8 +10,14 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [700,800]
-# size = [400,900]
+
+# 2-1 고정된 화면 크기
+# size = [700,800]
+# screen = pygame.display.set_mode(size)
+
+# 2-2 플레이어의 컴퓨터 환경에 맞춘 화면의 크기 
+infoObject = pygame.display.Info()
+size = [infoObject.current_w//2,infoObject.current_h-100]
 screen = pygame.display.set_mode(size)
 
 title = "My Game"
@@ -112,7 +118,7 @@ white = (255,255,255)
 background_color = (210,105,30)
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 
-background_image_desert = pygame.transform.scale(background_image_desert,(700,800)) # 그림의 크기를 조정한다.
+background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
 
 
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
@@ -277,23 +283,17 @@ while SB==0:
         # 미사일의 객체를 리스트에 저장한다.
         m_list.append(mm)
 
-    # 점수가 200점 이상이라면 미사일에 변화가 생김
+    # 점수가 200점 이상이라면 미사일이 한개 더 늘어남
+    # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
     if (space_go==True) and (k%m_speed==0) and score >=200:
         # 두번째 미사일 객체 생성
         mm2 = obj()
         mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         mm2.change_size(m_xsize, m_ysize)
-        if score<400:
-            mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
-            mm2.y = ss.y -mm2.sy - 10
-        elif score>=400:
-            mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
-            mm2.y = ss.y -mm2.sy - 10
-        
+        mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
+        mm2.y = ss.y -mm2.sy - 10
         mm2.move = 15 
         m_list.append(mm2)
-    
-    
 
 
     # 미사일의 발생 빈도 조절
