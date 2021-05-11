@@ -10,8 +10,14 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [700,800]
-# size = [400,900]
+
+# 2-1 고정된 화면 크기
+# size = [700,800]
+# screen = pygame.display.set_mode(size)
+
+# 2-2 플레이어의 컴퓨터 환경에 맞춘 화면의 크기 
+infoObject = pygame.display.Info()
+size = [infoObject.current_w//2,infoObject.current_h-100]
 screen = pygame.display.set_mode(size)
 
 title = "My Game"
@@ -85,14 +91,16 @@ right_go = False
 up_go = False
 down_go = False
 
-right_up_go = False
-left_up_go = False
-right_down_go = False
-left_down_go = False
+
 space_go = False
 
 # 미사일의 스피드
 m_speed = 0 # 초기화
+
+# 미사일의 사이즈
+m_xsize =5
+m_ysize = 15
+
 killed = 0
 
 # 미사일의 크기 조정
@@ -110,7 +118,7 @@ white = (255,255,255)
 background_color = (210,105,30)
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 
-background_image_desert = pygame.transform.scale(background_image_desert,(700,800)) # 그림의 크기를 조정한다.
+background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
 
 
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
@@ -137,7 +145,7 @@ while SB==0:
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(100,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(size[0]//2-(size[0]//2)//2,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -161,21 +169,13 @@ while SB==0:
             # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
-                # if event.key == pygame.K_UP:
-                #     left_up_go = True
-                # elif event.key == pygame.K_DOWN:
-                #     left_down_go = True
                 left_go = True
             if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
-                # if event.key == pygame.K_UP:
-                #     right_up_go = True
-                # elif event.key == pygame.K_DOWN:
-                #     right_down_go = True
                 right_go = True
             if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
                 space_go = True
                 # 속도를 1/6으로 낮췄는데 누를때마다도 한번씩 발사하고싶어서 누르면 k=0으로 초기화시킴 -> while문 조건 통과하기위해
-                k=0
+                # k=0
             if event.key == pygame.K_UP :
                 up_go = True
             if event.key == pygame.K_DOWN:
@@ -262,15 +262,41 @@ while SB==0:
         # 미사일의 사진
         mm.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         # 미사일의 크기 조정
-        mm.change_size(5,15)
+        # m_xsize = 5, m_ysize = 15
+        mm.change_size(m_xsize,m_ysize)
         # 미사일의 x값 (위치)
-        mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
-        # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
-        mm.y = ss.y - mm.sy - 10
+        if score<200:
+            mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
+            # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
+            mm.y = ss.y - mm.sy - 10
+        elif score>=200 and score<400:
+            mm.x = round(ss.x +ss.sx/3 -mm.sx/2)
+            # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
+            mm.y = ss.y - mm.sy - 10
+        elif score>=400:
+            mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
+            mm.y = ss.y - mm.sy - 10
+        
+        
         # 미사일의 움직이는 속도를 결정함
         mm.move = 15
         # 미사일의 객체를 리스트에 저장한다.
         m_list.append(mm)
+
+    # 점수가 200점 이상이라면 미사일이 한개 더 늘어남
+    # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
+    if (space_go==True) and (k%m_speed==0) and score >=200:
+        # 두번째 미사일 객체 생성
+        mm2 = obj()
+        mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm2.change_size(m_xsize, m_ysize)
+        mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
+        mm2.y = ss.y -mm2.sy - 10
+        mm2.move = 15 
+        m_list.append(mm2)
+
+
+    # 미사일의 발생 빈도 조절
     k+=1
 
     # 피사체의 리스트를 초기화함
@@ -281,6 +307,9 @@ while SB==0:
         m = m_list[i]
         # 미사일 속도만큼 미사일이 y축방향으로 빠져나간다.
         m.y -= m.move
+        if score>400:
+            # 점수가 400점 이상이면 미사일이 꼬여서 나가는것 처럼 보이게 함
+            m.x+= random.uniform(-10,10)
         # 미사일의 사이즈만큼 나갔을때 지워준다.
         if m.y < -m.sx:
             d_list.append(i)
@@ -370,8 +399,8 @@ while SB==0:
     
 
     # 4-4. 그리기 
-    screen.fill(background_color)
-    # screen.blit(background_image_desert,(0,0))
+    # screen.fill(background_color)
+    screen.blit(background_image_desert,(0,0))
     
 
     ss.show()
