@@ -26,8 +26,8 @@ pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 clock = pygame.time.Clock()
 #사막맵 배경음악
 pygame.mixer.init()
-pygame.mixer.music.load("SourceCode\Sound\ariant.mp3")
-pygame.mixer.music.play(-1)
+# pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
+# pygame.mixer.music.play(-1)
 
 
 class obj:
@@ -49,7 +49,6 @@ class obj:
     def change_size(self,sx,sy):
         self.img = pygame.transform.scale(self.img,(sx,sy)) # 그림의 크기를 조정한다.
         self.sx, self.sy = self.img.get_size()
-    
 
     def show(self):
         screen.blit(self.img,(self.x,self.y))
@@ -77,7 +76,7 @@ def crash2(a,b):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/pngtree-airplane-vector-illustration-png-image_332890.jpeg")
+ss.put_img("SourceCode/Image/DesertLV1Char.png")
 # 그림의 크기를 조정
 ss.change_size(50,80)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
@@ -327,7 +326,7 @@ while SB==0:
     if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
-        aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
+        aa.put_img("SourceCode/Image/Scorphion.png")
         # 피사체의 그림 크기 조정
         random_size = random.randrange(min_size,max_size)
         # 정사각형 모양의 피사체
@@ -461,3 +460,5 @@ pygame.quit()
 
 # score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
 
+# issue 에 연타 버그 해결
+# 이미지 전체화면처리 
