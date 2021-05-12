@@ -10,16 +10,24 @@ from datetime import datetime
 pygame.init()
 
 # 2. 게임창 옵션 설정
-size = [500,800]
-# size = [400,900]
+
+# 2-1 고정된 화면 크기
+# size = [700,800]
+# screen = pygame.display.set_mode(size)
+
+# 2-2 플레이어의 컴퓨터 환경에 맞춘 화면의 크기 
+infoObject = pygame.display.Info()
+size = [infoObject.current_w//2,infoObject.current_h-100]
 screen = pygame.display.set_mode(size)
 
 title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
 clock = pygame.time.Clock()
-
-
+#파이게임 배경음악
+pygame.mixer.init()
+pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
+pygame.mixer.music.play(-1)
 
 class obj:
     def __init__(self):
@@ -30,10 +38,10 @@ class obj:
     def put_img(self,address):
         # png파일 일때
         # convert해줘야하는 문제가 있기때문에
-        #if address[-3:] == "png":
-        self.img = pygame.image.load(address).convert_alpha()    
-        #else: 
-            #self.img = pygame.image.load(address)
+        if address[-3:] == "png":
+            self.img = pygame.image.load(address).convert_alpha()    
+        else: 
+            self.img = pygame.image.load(address)
         self.sx, self.sy = self.img.get_size()
 
     # 피사체의 그림 조정
@@ -61,14 +69,14 @@ def crash(a,b):
 
 def crash2(a,b):
     # 미사일이 두번 맞았을때 사라지게끔!하는 함수
+    
     pass
-
 
 
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode\Image\robot.jpg")
+ss.put_img("SourceCode/Image/pngtree-airplane-vector-illustration-png-image_332890.jpeg")
 # 그림의 크기를 조정
 ss.change_size(50,80)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
@@ -79,25 +87,28 @@ ss.y = size[1] - ss.sy
 # 비행체가 움직이는 속도를 결정함
 ss.move = 5
 
+
 k=0
 left_go = False
 right_go = False
 up_go = False
 down_go = False
 
-right_up_go = False
-left_up_go = False
-right_down_go = False
-left_down_go = False
+
 space_go = False
 
 # 미사일의 스피드
-m_speed = 30
-number_for_m_speed = 1
-killed = 0
+m_speed = 0 # 초기화
+
+# 미사일의 사이즈
+m_xsize =5
+m_ysize = 15
+
+# 게임의 FPS
+FPS = 60
 
 # 미사일의 크기 조정
-min_size = 20
+min_size = 0
 max_size = 40
 
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
@@ -108,6 +119,10 @@ a_list = []
 # RGB
 black = (0,0,0)
 white = (255,255,255)
+background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
+
+background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
+
 
 # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
 kill = 0 
@@ -130,10 +145,10 @@ while SB==0:
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
     screen.fill(black)
-
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",15)
+    
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(130,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(size[0]//2-(size[0]//2)//2,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -144,10 +159,10 @@ while SB==0:
 start_time = datetime.now()
 SB=0
 while SB==0:
-
+    
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
-    clock.tick(60)
+    clock.tick(FPS)
 
     # 4-2. 각종 입력 감지 
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
@@ -157,30 +172,18 @@ while SB==0:
             # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
-                # if event.key == pygame.K_UP:
-                #     left_up_go = True
-                # elif event.key == pygame.K_DOWN:
-                #     left_down_go = True
                 left_go = True
             if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
-                # if event.key == pygame.K_UP:
-                #     right_up_go = True
-                # elif event.key == pygame.K_DOWN:
-                #     right_down_go = True
                 right_go = True
             if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
                 space_go = True
                 # 속도를 1/6으로 낮췄는데 누를때마다도 한번씩 발사하고싶어서 누르면 k=0으로 초기화시킴 -> while문 조건 통과하기위해
-                k=0
+                # k=0
             if event.key == pygame.K_UP :
                 up_go = True
             if event.key == pygame.K_DOWN:
                 down_go = True
             
-            
-            
-            
-        
         elif event.type == pygame.KEYUP: # 키를 누르는것을 뗐을때!
             if event.key == pygame.K_LEFT: # 키를 뗐다면 그 키가 왼쪽 방향키 인가?
                 left_go = False
@@ -243,12 +246,11 @@ while SB==0:
     #         ss.y = 0
 
     # 미사일의 속도 조정
-    # 미사일의 스피드가 5수준이하로 떨어지지 않게끔
-    # 킬수와 잃은수의 차이가 10씩 날때마다 speed증가
-    if (kill - loss) >= number_for_m_speed*10:
-        if m_speed >= 10:
-            number_for_m_speed+=1
-            m_speed -= 5
+    if 30-(score//10)>=6:
+        m_speed = 30-(score//10)
+    else:
+        m_speed=6
+
     
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
@@ -259,15 +261,41 @@ while SB==0:
         # 미사일의 사진
         mm.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         # 미사일의 크기 조정
-        mm.change_size(5,15)
+        # m_xsize = 5, m_ysize = 15
+        mm.change_size(m_xsize,m_ysize)
         # 미사일의 x값 (위치)
-        mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
-        # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
-        mm.y = ss.y - mm.sy - 10
+        if score<200:
+            mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
+            # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
+            mm.y = ss.y - mm.sy - 10
+        elif score>=200 and score<400:
+            mm.x = round(ss.x +ss.sx/3 -mm.sx/2)
+            # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
+            mm.y = ss.y - mm.sy - 10
+        elif score>=400:
+            mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
+            mm.y = ss.y - mm.sy - 10
+        
+        
         # 미사일의 움직이는 속도를 결정함
         mm.move = 15
         # 미사일의 객체를 리스트에 저장한다.
         m_list.append(mm)
+
+    # 점수가 200점 이상이라면 미사일이 한개 더 늘어남
+    # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
+    if (space_go==True) and (k%m_speed==0) and score >=200:
+        # 두번째 미사일 객체 생성
+        mm2 = obj()
+        mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm2.change_size(m_xsize, m_ysize)
+        mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
+        mm2.y = ss.y -mm2.sy - 10
+        mm2.move = 15 
+        m_list.append(mm2)
+
+
+    # 미사일의 발생 빈도 조절
     k+=1
 
     # 피사체의 리스트를 초기화함
@@ -278,15 +306,25 @@ while SB==0:
         m = m_list[i]
         # 미사일 속도만큼 미사일이 y축방향으로 빠져나간다.
         m.y -= m.move
+        if score>400:
+            # 점수가 400점 이상이면 미사일이 꼬여서 나가는것 처럼 보이게 함
+            m.x+= random.uniform(-10,10)
         # 미사일의 사이즈만큼 나갔을때 지워준다.
         if m.y < -m.sx:
             d_list.append(i)
     d_list.reverse()
     for d in d_list:
         del m_list[d]
-        
+    
+    # score 100점 마다 피사체의 사이즈 1씩 감소
+    if 30 - score//100 > 20:
+        min_size = 30 - score//100
+    else:
+        min_size = 20
 
-    if random.random() > 0.98:
+
+    # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
+    if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/png-clipart-alien-alien.png")
@@ -297,7 +335,7 @@ while SB==0:
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
-        aa.move = 2
+        aa.move = 2 + (score//300)
         a_list.append(aa)
 
     # 살생부 리스트 초기화
@@ -306,7 +344,7 @@ while SB==0:
         a = a_list[i]
         a.y += a.move
         # 외계인이 화면 밖으로 나갔다면 지워준다.
-        if a.y >= size[1]:    
+        if a.y >= size[1]:
             d_list.append(i)
 
     # 메모리 효율을 위해 삭제
@@ -355,17 +393,23 @@ while SB==0:
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
             GO = 1
 
+    # score 가 0 점이 되면 프로그램 종료
+    if score < 0:
+        SB = 1
+    
+
     # 4-4. 그리기 
-    screen.fill(black)
+    screen.blit(background_image_desert,(0,0))
+    
     ss.show()
     for m in m_list:
         m.show()
     for a in a_list:
         a.show()
     # 점수 산정
-    score = (kill*5 - loss*10)
+    score = (kill*5 - loss*8)
     
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",22)
     text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
@@ -388,7 +432,7 @@ while GO==1:
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",40)
     text_kill = font.render("GAME OVER",True,(255,0,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(150,round((size[1]/2)-70))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    screen.blit(text_kill,(size[0]//2-(size[0]//2)//2+60,round((size[1]/2)-70))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
@@ -404,4 +448,16 @@ pygame.quit()
 # 3. Surface 화면에 표시
 # screen.blit(text,position)
 
+
 # 위 코드 세줄이 한 묶음으로 다니게 될것임
+
+
+
+
+
+
+# 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
+
+
+# score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
+

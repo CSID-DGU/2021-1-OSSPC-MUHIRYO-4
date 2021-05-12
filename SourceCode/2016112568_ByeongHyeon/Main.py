@@ -24,7 +24,10 @@ title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
 clock = pygame.time.Clock()
-
+#사막맵 배경음악
+pygame.mixer.init()
+pygame.mixer.music.load("SourceCode\Sound\ariant.mp3")
+pygame.mixer.music.play(-1)
 
 
 class obj:
