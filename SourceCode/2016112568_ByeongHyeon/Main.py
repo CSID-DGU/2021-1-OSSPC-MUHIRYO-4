@@ -19,7 +19,7 @@ pygame.init()
 infoObject = pygame.display.Info()
 size = [infoObject.current_w//2,infoObject.current_h-100]
 screen = pygame.display.set_mode(size)
-
+print(size)
 title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
@@ -78,7 +78,7 @@ ss = obj()
 # 우리들이 움직여야할 물체
 ss.put_img("SourceCode/Image/DesertLV1Char.png")
 # 그림의 크기를 조정
-ss.change_size(50,80)
+ss.change_size(size[1]//18,size[1]//13) # 기존 크기인 (50,80)에 근사한 비율
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
 # x값의 절반에서 피사체의 길이의 절반만큼 왼쪽으로 이동해야 정확히 가운데임
 ss.x = round(size[0]/2 - ss.sx/2)
@@ -460,5 +460,6 @@ pygame.quit()
 
 # score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
 
-# issue 에 연타 버그 해결
+
 # 이미지 전체화면처리 
+# 변수 정리 
