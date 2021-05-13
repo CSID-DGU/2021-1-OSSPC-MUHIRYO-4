@@ -24,7 +24,14 @@ title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
 clock = pygame.time.Clock()
-
+#파이게임 배경음악
+pygame.mixer.init()
+pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
+#미사일 효과음
+sfx1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+sfx1.set_volume(0.2)
 
 
 class obj:
@@ -264,6 +271,8 @@ while SB==0:
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(m_xsize,m_ysize)
+        # 미사일 생성시 효과음
+        sfx1.play()
         # 미사일의 x값 (위치)
         if score<200:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)

@@ -28,6 +28,10 @@ clock = pygame.time.Clock()
 pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
+#미사일 효과음
+sfx1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+sfx1.set_volume(0.2)
 
 class obj:
     def __init__(self):
@@ -159,7 +163,7 @@ while SB==0:
 start_time = datetime.now()
 SB=0
 while SB==0:
-    
+
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(FPS)
@@ -192,7 +196,7 @@ while SB==0:
             elif event.key == pygame.K_SPACE: # 키를 뗐다면 그 키가 스페이스 키인가?
                 space_go = False
             elif event.key == pygame.K_UP:
-                up_go = False
+                up_go = False 
             elif event.key == pygame.K_DOWN:
                 down_go = False
         
@@ -263,6 +267,8 @@ while SB==0:
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(m_xsize,m_ysize)
+        #미사일 효과음
+        sfx1.play()
         # 미사일의 x값 (위치)
         if score<200:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
@@ -270,7 +276,7 @@ while SB==0:
             mm.y = ss.y - mm.sy - 10
         elif score>=200 and score<400:
             mm.x = round(ss.x +ss.sx/3 -mm.sx/2)
-            # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
+            # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기
             mm.y = ss.y - mm.sy - 10
         elif score>=400:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
