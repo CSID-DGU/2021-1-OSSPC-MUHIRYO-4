@@ -85,7 +85,7 @@ def crash2(a,b):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/DesertLV1Car.png")
+ss.put_img("SourceCode\Image\DesertLV1Car-removebg-preview.png")
 # 그림의 크기를 조정
 ss.change_size(50,80)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
@@ -337,7 +337,7 @@ while SB==0:
     if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
-        aa.put_img("SourceCode/Image/Scorphion1.png")
+        aa.put_img("SourceCode\Image\scorphion1-removebg-preview.png")
         # 피사체의 그림 크기 조정
         random_size = random.randrange(min_size,max_size)
         # 정사각형 모양의 피사체
