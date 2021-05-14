@@ -19,16 +19,25 @@ pygame.init()
 infoObject = pygame.display.Info()
 size = [infoObject.current_w//2,infoObject.current_h-100]
 screen = pygame.display.set_mode(size)
-print(size)
+
 title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
 clock = pygame.time.Clock()
-#사막맵 배경음악
+#파이게임 배경음악
 pygame.mixer.init()
-# pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
-# pygame.mixer.music.play(-1)
-
+pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
+# 미사일 효과음
+missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
+missile1.set_volume(0.2)
+# 피사체 파괴시 효과음
+monster1 = pygame.mixer.Sound("SourceCode/Sound/monster-sound7.ogg")
+monster1.set_volume(0.3)
+# 피사체와 비행체 충돌시 효과음
+boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
+boom1.set_volume(0.2)
 
 class obj:
     def __init__(self):
@@ -76,9 +85,9 @@ def crash2(a,b):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/DesertLV1Char.png")
+ss.put_img("SourceCode/Image/DesertLV1Car-removebg-preview.png")
 # 그림의 크기를 조정
-ss.change_size(size[1]//18,size[1]//13) # 기존 크기인 (50,80)에 근사한 비율
+ss.change_size(50,80)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
 # x값의 절반에서 피사체의 길이의 절반만큼 왼쪽으로 이동해야 정확히 가운데임
 ss.x = round(size[0]/2 - ss.sx/2)
@@ -262,6 +271,8 @@ while SB==0:
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(m_xsize,m_ysize)
+        # 미사일 생성시 효과음
+        missile1.play()
         # 미사일의 x값 (위치)
         if score<200:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
@@ -326,7 +337,7 @@ while SB==0:
     if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
-        aa.put_img("SourceCode/Image/Scorphion.png")
+        aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
         # 피사체의 그림 크기 조정
         random_size = random.randrange(min_size,max_size)
         # 정사각형 모양의 피사체
@@ -378,6 +389,8 @@ while SB==0:
         del m_list[dm]
     for da in da_list:
         del a_list[da]
+        # 피사체 사망시 효과음
+        monster1.play()
         # 피사체를 파괴한 횟수
         kill += 1
 
@@ -385,6 +398,8 @@ while SB==0:
         a = a_list[i]
         # 만약 외계인이 ss 와 부딛치면 게임 종료
         if crash(a,ss) is True:
+            # 부딛칠 때 효과음
+            boom1.play()
             # 1초뒤에 꺼지도록 함
             time.sleep(1)
             # while 문이 종료되도록 하는 key
@@ -460,6 +475,5 @@ pygame.quit()
 
 # score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
 
-
+# issue 에 연타 버그 해결
 # 이미지 전체화면처리 
-# 변수 정리 
