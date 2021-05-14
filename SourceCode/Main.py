@@ -29,9 +29,15 @@ pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.3)
-#미사일 효과음
-sfx1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
-sfx1.set_volume(0.2)
+# 미사일 효과음
+missile1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+missile1.set_volume(0.2)
+# 피사체 파괴시 효과음
+monster1 = pygame.mixer.Sound("SourceCode\Sound\monster-sound7.ogg")
+monster1.set_volume(0.3)
+# 피사체와 비행체 충돌시 효과음
+boom1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound4.ogg")
+boom1.set_volume(0.2)
 
 class obj:
     def __init__(self):
@@ -79,7 +85,7 @@ def crash2(a,b):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/DesertLV1Char.png")
+ss.put_img("SourceCode/Image/DesertLV1Car.png")
 # 그림의 크기를 조정
 ss.change_size(50,80)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
@@ -266,7 +272,7 @@ while SB==0:
         # m_xsize = 5, m_ysize = 15
         mm.change_size(m_xsize,m_ysize)
         # 미사일 생성시 효과음
-        sfx1.play()
+        missile1.play()
         # 미사일의 x값 (위치)
         if score<200:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
@@ -331,7 +337,7 @@ while SB==0:
     if random.random() > 0.98 -(score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
-        aa.put_img("SourceCode/Image/Scorphion.png")
+        aa.put_img("SourceCode/Image/Scorphion1.png")
         # 피사체의 그림 크기 조정
         random_size = random.randrange(min_size,max_size)
         # 정사각형 모양의 피사체
@@ -383,6 +389,8 @@ while SB==0:
         del m_list[dm]
     for da in da_list:
         del a_list[da]
+        # 피사체 사망시 효과음
+        monster1.play()
         # 피사체를 파괴한 횟수
         kill += 1
 
@@ -390,6 +398,8 @@ while SB==0:
         a = a_list[i]
         # 만약 외계인이 ss 와 부딛치면 게임 종료
         if crash(a,ss) is True:
+            # 부딛칠 때 효과음
+            boom1.play()
             # 1초뒤에 꺼지도록 함
             time.sleep(1)
             # while 문이 종료되도록 하는 key

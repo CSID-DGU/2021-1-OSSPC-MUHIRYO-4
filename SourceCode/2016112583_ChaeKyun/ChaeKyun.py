@@ -30,8 +30,14 @@ pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.3)
 #미사일 효과음
-sfx1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
-sfx1.set_volume(0.2)
+missile1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+missile1.set_volume(0.2)
+#빌런 효과음
+monster1 = pygame.mixer.Sound("SourceCode\Sound\monster-sound7.ogg")
+monster1.set_volume(0.2)
+# 피사체와 비행체 충돌시 효과음
+boom1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound4.ogg")
+boom1.set_volume(0.2)
 
 class obj:
     def __init__(self):
@@ -268,7 +274,7 @@ while SB==0:
         # m_xsize = 5, m_ysize = 15
         mm.change_size(m_xsize,m_ysize)
         #미사일 효과음
-        sfx1.play()
+        missile1.play()
         # 미사일의 x값 (위치)
         if score<200:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
@@ -387,6 +393,7 @@ while SB==0:
         del a_list[da]
         # 피사체를 파괴한 횟수
         kill += 1
+        monster1.play()
 
     for i in range(len(a_list)):
         a = a_list[i]
