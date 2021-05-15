@@ -40,9 +40,34 @@ boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 boom1.set_volume(0.2)
 
 class Move:
+    left_go = False
+    right_go = False
+    up_go = False
+    down_go = False
+    space_go = False
+    
+    # 게임의 FPS
+    FPS = 60
+
 
 class Color:
     black = (0,0,0)
+    white = (255,255,255)
+
+class Size:
+    # 미사일의 사이즈
+    m_xsize =5
+    m_ysize = 15
+
+    # 미사일의 크기 조정(최대값, 최소값)
+    min_size = 0
+    max_size = 40
+
+class Speed:
+    # 미사일의 스피드
+    m_speed = 0 # 초기화`
+    # 미사일 빈도 조정 
+    k=0
 
 
 class obj:
@@ -102,28 +127,7 @@ ss.y = size[1] - ss.sy
 ss.move = 5
 
 
-k=0
-left_go = False
-right_go = False
-up_go = False
-down_go = False
 
-
-space_go = False
-
-# 미사일의 스피드
-m_speed = 0 # 초기화
-
-# 미사일의 사이즈
-m_xsize =5
-m_ysize = 15
-
-# 게임의 FPS
-FPS = 60
-
-# 미사일의 크기 조정
-min_size = 0
-max_size = 40
 
 # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
 m_list = []
@@ -131,8 +135,8 @@ m_list = []
 a_list = []
 
 # RGB
-black = (0,0,0)
-white = (255,255,255)
+
+
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
 
 background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
@@ -176,7 +180,7 @@ while SB==0:
     
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
-    clock.tick(FPS)
+    clock.tick(Move.FPS)
 
     # 4-2. 각종 입력 감지 
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
@@ -186,29 +190,29 @@ while SB==0:
             # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
-                left_go = True
+                Move.left_go = True
             if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
-                right_go = True
+                Move.right_go = True
             if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
-                space_go = True
+                Move.space_go = True
                 # 속도를 1/6으로 낮췄는데 누를때마다도 한번씩 발사하고싶어서 누르면 k=0으로 초기화시킴 -> while문 조건 통과하기위해
                 # k=0
             if event.key == pygame.K_UP :
-                up_go = True
+                Move.up_go = True
             if event.key == pygame.K_DOWN:
-                down_go = True
+                Move.down_go = True
             
         elif event.type == pygame.KEYUP: # 키를 누르는것을 뗐을때!
             if event.key == pygame.K_LEFT: # 키를 뗐다면 그 키가 왼쪽 방향키 인가?
-                left_go = False
+                Move.left_go = False
             elif event.key == pygame.K_RIGHT: # 키를 뗐다면 그 키가 오른쪽 방향키 인가?
-                right_go = False
+                Move.right_go = False
             elif event.key == pygame.K_SPACE: # 키를 뗐다면 그 키가 스페이스 키인가?
-                space_go = False
+                Move.space_go = False
             elif event.key == pygame.K_UP:
-                up_go = False
+                Move.up_go = False
             elif event.key == pygame.K_DOWN:
-                down_go = False
+                Move.down_go = False
         
 
     
@@ -220,7 +224,7 @@ while SB==0:
 
     # 버튼을 꾹 길게 눌렀을때 움직이게 하기
     # 왼쪽 방향키를 눌렀을 때
-    if left_go == True:
+    if Move.left_go == True:
         ss.x -= ss.move
         # 물체가 왼쪽 끝 경계값으로 이동하면 더이상 나가지 않게끔 만듬!
         # 배경이 뭐냐에 따라 달라질 듯 !
@@ -228,7 +232,7 @@ while SB==0:
             # 더 이상 나가지 못하도록 0 으로 막아줌
             ss.x = 0 
     # 오른쪽 방향키를 눌렀을 때
-    elif right_go == True:
+    elif Move.right_go == True:
         ss.x += ss.move
         # 오른쪽 끝에서 비행선의 가로크기만큼 빼줘야한다
         if ss.x >= size[0] - ss.sx:
@@ -237,27 +241,20 @@ while SB==0:
     # 윗 방향키를 눌렀을때
     # 윗 방향키를 elif에서 if로 시작
     # 좌우와 상하가 독립된 상태로 구분됨
-    if up_go == True:
+    if Move.up_go == True:
         ss.y -= ss.move
         # 게임화면 위쪽 화면으로 나가는 경우
         if ss.y < 0:
             # 더이상 나가지 못하게 위치값 고정
             ss.y = 0
     # 아래 방향키를 눌렀을때
-    elif down_go == True:
+    elif Move.down_go == True:
         ss.y += ss.move
         # 게임화면 위쪽 화면으로 나가는 경우
         if ss.y >= size[1] - ss.sy:
             # 더이상 나가지 못하게 위치값 고정
             ss.y = size[1] - ss.sy
-    
-    # if right_up_go == True:
-    #     ss.y -= ss.move
-    #     ss.x += ss.move
-    #     if ss.x >= size[0] - ss.sx:
-    #         ss.x = size[0] - ss.sx
-    #     if ss.y < 0:
-    #         ss.y = 0
+
 
     # 미사일의 속도 조정
     if 30-(score//10)>=6:
@@ -268,15 +265,15 @@ while SB==0:
     
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
-    # k%6 이면 미사일의 발생 확률을 1/6으로 낮춤!
-    if (space_go == True) and k%m_speed == 0:
+    # k%6 이면 미사일의 발생 확률을 1/6으로  낮춤!
+    if (Move.space_go == True) and Speed.k %m_speed == 0:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
         mm.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
-        mm.change_size(m_xsize,m_ysize)
+        mm.change_size(Size.m_xsize,Size.m_ysize)
         # 미사일 생성시 효과음
         missile1.play()
         # 미사일의 x값 (위치)
@@ -300,11 +297,11 @@ while SB==0:
 
     # 점수가 200점 이상이라면 미사일이 한개 더 늘어남
     # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
-    if (space_go==True) and (k%m_speed==0) and score >=200:
+    if (Move.space_go==True) and (Speed.k%m_speed==0) and score >=200:
         # 두번째 미사일 객체 생성
         mm2 = obj()
         mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
-        mm2.change_size(m_xsize, m_ysize)
+        mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
         mm2.y = ss.y -mm2.sy - 10
         mm2.move = 15 
@@ -312,7 +309,7 @@ while SB==0:
 
 
     # 미사일의 발생 빈도 조절
-    k+=1
+    Speed.  k+=1
 
     # 피사체의 리스트를 초기화함
     # delete list
@@ -334,9 +331,9 @@ while SB==0:
     
     # score 100점 마다 피사체의 사이즈 1씩 감소
     if 30 - score//100 > 20:
-        min_size = 30 - score//100
+        Size.min_size = 30 - score//100
     else:
-        min_size = 20
+        Size.min_size = 20
 
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
@@ -345,7 +342,7 @@ while SB==0:
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
         # 피사체의 그림 크기 조정
-        random_size = random.randrange(min_size,max_size)
+        random_size = random.randrange(Size.min_size,Size.max_size)
         # 정사각형 모양의 피사체
         aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
