@@ -39,6 +39,11 @@ monster1.set_volume(0.3)
 boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 boom1.set_volume(0.2)
 
+class Move:
+
+class Color:
+    black = (0,0,0)
+
 class obj:
     def __init__(self):
         self.x =0
@@ -78,7 +83,6 @@ def crash(a,b):
 
 def crash2(a,b):
     # 미사일이 두번 맞았을때 사라지게끔!하는 함수
-    
     pass
 
 
@@ -95,6 +99,7 @@ ss.x = round(size[0]/2 - ss.sx/2)
 ss.y = size[1] - ss.sy
 # 비행체가 움직이는 속도를 결정함
 ss.move = 5
+
 
 k=0
 left_go = False
@@ -152,7 +157,7 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
-    screen.fill(black)
+    screen.fill(Color.black)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
