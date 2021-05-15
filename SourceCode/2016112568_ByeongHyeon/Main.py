@@ -44,6 +44,7 @@ class Move:
 class Color:
     black = (0,0,0)
 
+
 class obj:
     def __init__(self):
         self.x =0
