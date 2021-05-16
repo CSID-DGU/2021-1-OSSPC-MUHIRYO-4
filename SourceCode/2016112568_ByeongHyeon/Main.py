@@ -40,25 +40,29 @@ boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 boom1.set_volume(0.2)
 
 class Move:
+    # 좌방향 이동키
     left_go = False
+    # 우방향 이동키
     right_go = False
+    # 윗방향 이동키
     up_go = False
+    # 아랫방향 이동키
     down_go = False
+    # 미사일 발사 키
     space_go = False
-    
     # 게임의 FPS
     FPS = 60
 
-
 class Color:
+    # RGB 검정
     black = (0,0,0)
+    # RGB 흰색
     white = (255,255,255)
 
 class Size:
-    # 미사일의 사이즈
+    # 미사일의 x,y사이즈
     m_xsize =5
     m_ysize = 15
-
     # 미사일의 크기 조정(최대값, 최소값)
     min_size = 0
     max_size = 40
@@ -69,6 +73,20 @@ class Speed:
     # 미사일 빈도 조정 
     k=0
 
+class Util:
+    # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
+    m_list = []
+    # 피사체 출현시 피사체 객체가 저장되는 리스트 공산
+    a_list = []
+    # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
+    kill = 0 
+    # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
+    loss = 0 
+    # 현재 내가 획득한 점수
+    score = 0
+    # Game Over
+    GO = 0   
+    
 
 class obj:
     def __init__(self):
@@ -107,9 +125,6 @@ def crash(a,b):
     else:
         return False
 
-def crash2(a,b):
-    # 미사일이 두번 맞았을때 사라지게끔!하는 함수
-    pass
 
 
 # 객체 생성
@@ -126,32 +141,12 @@ ss.y = size[1] - ss.sy
 # 비행체가 움직이는 속도를 결정함
 ss.move = 5
 
-
-
-
-# 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
-m_list = []
-# 피사체 출현시 피사체 객체가 저장되는 리스트 공산
-a_list = []
-
-# RGB
-
-
+# 게임의 배경화면 설정
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
-
 background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
 
 
-# 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
-kill = 0 
-# 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
-loss = 0 
 
-# 현재 내가 획득한 점수
-score = 0
-
-# Game Over
-GO = 0 
 
 
 # 4-0 게임 시작 대기 화면(작은 event)
@@ -257,8 +252,8 @@ while SB==0:
 
 
     # 미사일의 속도 조정
-    if 30-(score//10)>=6:
-        m_speed = 30-(score//10)
+    if 30-(Util.score//10)>=6:
+        m_speed = 30-(Util.score//10)
     else:
         m_speed=6
 
@@ -277,15 +272,15 @@ while SB==0:
         # 미사일 생성시 효과음
         missile1.play()
         # 미사일의 x값 (위치)
-        if score<200:
+        if Util.score<200:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
             # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
             mm.y = ss.y - mm.sy - 10
-        elif score>=200 and score<400:
+        elif Util.score>=200 and Util.score<400:
             mm.x = round(ss.x +ss.sx/3 -mm.sx/2)
             # 미사일의 위치 = 비행기의 위치 - 미사일의 y크기 
             mm.y = ss.y - mm.sy - 10
-        elif score>=400:
+        elif Util.score>=400:
             mm.x = round(ss.x + ss.sx/2 - mm.sx/2)
             mm.y = ss.y - mm.sy - 10
         
@@ -293,11 +288,11 @@ while SB==0:
         # 미사일의 움직이는 속도를 결정함
         mm.move = 15
         # 미사일의 객체를 리스트에 저장한다.
-        m_list.append(mm)
+        Util.m_list.append(mm)
 
     # 점수가 200점 이상이라면 미사일이 한개 더 늘어남
     # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
-    if (Move.space_go==True) and (Speed.k%m_speed==0) and score >=200:
+    if (Move.space_go==True) and (Speed.k%m_speed==0) and Util.score >=200:
         # 두번째 미사일 객체 생성
         mm2 = obj()
         mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
@@ -305,7 +300,7 @@ while SB==0:
         mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
         mm2.y = ss.y -mm2.sy - 10
         mm2.move = 15 
-        m_list.append(mm2)
+        Util.m_list.append(mm2)
 
 
     # 미사일의 발생 빈도 조절
@@ -314,12 +309,12 @@ while SB==0:
     # 피사체의 리스트를 초기화함
     # delete list
     d_list = []
-    for i in range(len(m_list)):
+    for i in range(len(Util.m_list)):
         # i 번째 미사일
-        m = m_list[i]
+        m = Util.m_list[i]
         # 미사일 속도만큼 미사일이 y축방향으로 빠져나간다.
         m.y -= m.move
-        if score>400:
+        if Util.score>400:
             # 점수가 400점 이상이면 미사일이 꼬여서 나가는것 처럼 보이게 함
             m.x+= random.uniform(-10,10)
         # 미사일의 사이즈만큼 나갔을때 지워준다.
@@ -327,17 +322,17 @@ while SB==0:
             d_list.append(i)
     d_list.reverse()
     for d in d_list:
-        del m_list[d]
+        del Util.m_list[d]
     
     # score 100점 마다 피사체의 사이즈 1씩 감소
-    if 30 - score//100 > 20:
-        Size.min_size = 30 - score//100
+    if 30 - Util.score//100 > 20:
+        Size.min_size = 30 - Util.score//100
     else:
         Size.min_size = 20
 
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
-    if random.random() > 0.98 -(score//100)*0.01:
+    if random.random() > 0.98 -(Util.score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
@@ -348,13 +343,13 @@ while SB==0:
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
-        aa.move = 2 + (score//300)
-        a_list.append(aa)
+        aa.move = 2 + (Util.score//300)
+        Util.a_list.append(aa)
 
     # 살생부 리스트 초기화
     d_list = []
-    for i in range(len(a_list)):
-        a = a_list[i]
+    for i in range(len(Util.a_list)):
+        a = Util.a_list[i]
         a.y += a.move
         # 외계인이 화면 밖으로 나갔다면 지워준다.
         if a.y >= size[1]:
@@ -364,17 +359,17 @@ while SB==0:
     # 앞에서 부터 지워지면 리스트가 앞당겨져서 오류가 일어나기때문에 reverse해주고 지워준다.
     d_list.reverse()
     for d in d_list:
-        del a_list[d]
+        del Util.a_list[d]
         # 외계인이 화면 밖으로 나간 횟수
-        loss += 1
+        Util.loss += 1
 
     dm_list = []
     da_list = []
 
-    for i in range(len(m_list)):
-        for j in range(len(a_list)):
-            m = m_list[i]
-            a = a_list[j]
+    for i in range(len(Util.m_list)):
+        for j in range(len(Util.a_list)):
+            m = Util.m_list[i]
+            a = Util.a_list[j]
             if crash(m,a) is True:
                 dm_list.append(i)
                 da_list.append(j)
@@ -389,16 +384,16 @@ while SB==0:
 
     # del로 미사일과 외계인 삭제하기
     for dm in dm_list:
-        del m_list[dm]
+        del Util.m_list[dm]
     for da in da_list:
-        del a_list[da]
+        del Util.a_list[da]
         # 피사체 사망시 효과음
         monster1.play()
         # 피사체를 파괴한 횟수
-        kill += 1
+        Util.kill += 1
 
-    for i in range(len(a_list)):
-        a = a_list[i]
+    for i in range(len(Util.a_list)):
+        a = Util.a_list[i]
         # 만약 외계인이 ss 와 부딛치면 게임 종료
         if crash(a,ss) is True:
             # 부딛칠 때 효과음
@@ -408,10 +403,10 @@ while SB==0:
             # while 문이 종료되도록 하는 key
             SB = 1
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
-            GO = 1
+            Util.GO = 1
 
     # score 가 0 점이 되면 프로그램 종료
-    if score < 0:
+    if Util.score < 0:
         SB = 1
     
 
@@ -419,15 +414,15 @@ while SB==0:
     screen.blit(background_image_desert,(0,0))
     
     ss.show()
-    for m in m_list:
+    for m in Util.m_list:
         m.show()
-    for a in a_list:
+    for a in Util.a_list:
         a.show()
     # 점수 산정
-    score = (kill*5 - loss*8)
+    Util.score = (Util.kill*5 - Util.loss*8)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",22)
-    text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(kill,loss,score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
+    text_kill = font.render("Killed : {} Loss : {}  Score : {}".format(Util.kill,Util.loss,Util.score),True,(255,255,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     screen.blit(text_kill,(10,5)) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
     # 현재 흘러간 시간
@@ -441,11 +436,11 @@ while SB==0:
 
 # 5. 게임종료(1. x키를 눌러서 게임이 종료된 경우, 2. 죽어서 게임이 종료된 경우)
 # 이건 게임오버가 된 상황!
-while GO==1:
+while Util.GO==1:
     clock.tick(60)
     for event in pygame.event.get(): # 이벤트가 있다면 
         if event.type == pygame.QUIT:
-            GO=0
+            Util.GO=0
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",40)
     text_kill = font.render("GAME OVER",True,(255,0,0)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
