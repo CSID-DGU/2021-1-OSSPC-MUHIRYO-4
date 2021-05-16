@@ -28,8 +28,12 @@ clock = pygame.time.Clock()
 pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 #미사일 효과음
-missile1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+missile1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound8.ogg")
 missile1.set_volume(0.2)
+missile2 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+missile2.set_volume(0.2)
+missile3 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound16.ogg")
+missile3.set_volume(0.2)
 #빌런 효과음
 monster1 = pygame.mixer.Sound("SourceCode\Sound\monster-sound7.ogg")
 monster1.set_volume(0.2)
@@ -298,6 +302,8 @@ while SB==0:
     # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
     if (space_go==True) and (k%m_speed==0) and score >=200:
         # 두번째 미사일 객체 생성
+        missile1.stop()
+        missile2.play()
         mm2 = obj()
         mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         mm2.change_size(m_xsize, m_ysize)
