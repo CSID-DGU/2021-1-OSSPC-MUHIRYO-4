@@ -27,8 +27,6 @@ clock = pygame.time.Clock()
 #파이게임 배경음악
 pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.3)
 #미사일 효과음
 missile1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
 missile1.set_volume(0.2)
@@ -166,10 +164,12 @@ while SB==0:
 
 # 4. 메인 이벤트
 # 코드를 첫 실행한 시간 저장
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
 start_time = datetime.now()
 SB=0
 while SB==0:
-
+    
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(FPS)
