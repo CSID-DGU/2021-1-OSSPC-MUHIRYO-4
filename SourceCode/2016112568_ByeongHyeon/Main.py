@@ -27,11 +27,13 @@ clock = pygame.time.Clock()
 #파이게임 배경음악
 pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.3)
 # 미사일 효과음
-missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
+missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound8.ogg")
 missile1.set_volume(0.2)
+missile2 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
+missile2.set_volume(0.2)
+missile3 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound16.ogg")
+missile3.set_volume(0.2)
 # 피사체 파괴시 효과음
 monster1 = pygame.mixer.Sound("SourceCode/Sound/monster-sound7.ogg")
 monster1.set_volume(0.3)
@@ -168,6 +170,9 @@ while SB==0:
 
 
 # 4. 메인 이벤트
+#사막맵 배경음악 실행
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
 # 코드를 첫 실행한 시간 저장
 start_time = datetime.now()
 SB=0
@@ -294,6 +299,8 @@ while SB==0:
     # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
     if (Move.space_go==True) and (Speed.k%m_speed==0) and Util.score >=200:
         # 두번째 미사일 객체 생성
+        missile1.stop()
+        missile2.play()
         mm2 = obj()
         mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
         mm2.change_size(Size.m_xsize, Size.m_ysize)
@@ -315,6 +322,8 @@ while SB==0:
         # 미사일 속도만큼 미사일이 y축방향으로 빠져나간다.
         m.y -= m.move
         if Util.score>400:
+            missile2.stop()
+            missile3.play()
             # 점수가 400점 이상이면 미사일이 꼬여서 나가는것 처럼 보이게 함
             m.x+= random.uniform(-10,10)
         # 미사일의 사이즈만큼 나갔을때 지워준다.
