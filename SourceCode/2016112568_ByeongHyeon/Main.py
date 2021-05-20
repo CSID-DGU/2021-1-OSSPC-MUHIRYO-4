@@ -68,18 +68,23 @@ class Size:
     # 미사일의 크기 조정(최대값, 최소값)
     min_size = 0
     max_size = 40
+    block_size = 50
 
 class Speed:
     # 미사일의 스피드
     m_speed = 0 # 초기화`
     # 미사일 빈도 조정 
     k=0
+    create_rate_r = 0.995
+    create_rate_c = 0.98
 
 class Util:
     # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
     m_list = []
     # 피사체 출현시 피사체 객체가 저장되는 리스트 공산
     a_list = []
+    # 장애물 객체가 저장되는 리스트 
+    block_list=[]
     # 피사체를 미사일로 맞추었을때 맞춘 피사체의 개수
     kill = 0 
     # 피사체를 죽이지못하고 화면밖으로 놓친 피사체의 개수
@@ -341,7 +346,7 @@ while SB==0:
 
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
-    if random.random() > 0.98 -(Util.score//100)*0.01:
+    if random.random() > Speed.create_rate_c -(Util.score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
@@ -354,6 +359,30 @@ while SB==0:
         aa.y = 10
         aa.move = 2 + (Util.score//300)
         Util.a_list.append(aa)
+    
+    # 장해물 등장
+    if random.random() > Speed.create_rate_r:
+        # 장애물 객체 생성
+        block = obj()
+        block.put_img('SourceCode/Image/CATUS.png')
+        # random_size = random.randrange(Size.min_size,Size.max_size)
+        block.change_size(Size.block_size, Size.block_size)
+        block.x = 10
+        block.y = random.randrange(0, size[0] - block.sx - round(ss.sx/2))
+        block.move = 2 + (Util.score//300)
+        Util.block_list.append(block)
+
+    d2_list=[]
+    for i in range(len(Util.block_list)):
+        b = Util.block_list[i]
+        b.x += b.move
+        if b.x >= size[0]:
+            d2_list.append(i)
+    
+    d2_list.reverse()
+    for d2 in d2_list:
+        del Util.block_list[d2]
+
 
     # 살생부 리스트 초기화
     d_list = []
@@ -363,6 +392,7 @@ while SB==0:
         # 외계인이 화면 밖으로 나갔다면 지워준다.
         if a.y >= size[1]:
             d_list.append(i)
+    
 
     # 메모리 효율을 위해 삭제
     # 앞에서 부터 지워지면 리스트가 앞당겨져서 오류가 일어나기때문에 reverse해주고 지워준다.
@@ -413,7 +443,17 @@ while SB==0:
             SB = 1
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
             Util.GO = 1
-
+    
+    for i in range(len(Util.block_list)):
+        b = Util.block_list[i]
+        # 만약 장애물과 ss가 부딛치면 게임 종료시킴
+        if crash(b,ss) is True:
+            # 부딛칠 때 효과음
+            boom1.play()
+            time.sleep(1)
+            # while문 종료 키 
+            SB =1
+            Util.GO = 1
     # score 가 0 점이 되면 프로그램 종료
     if Util.score < 0:
         SB = 1
@@ -427,6 +467,9 @@ while SB==0:
         m.show()
     for a in Util.a_list:
         a.show()
+    for d in Util.block_list:
+        d.show()
+
     # 점수 산정
     Util.score = (Util.kill*5 - Util.loss*8)
     
