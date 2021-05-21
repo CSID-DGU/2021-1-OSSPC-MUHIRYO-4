@@ -3,8 +3,6 @@ import random
 import time
 from datetime import datetime
 
-from pygame.constants import VIDEORESIZE
-
 # sx, sy => 피사체의 x위치 y 위치
 # x, y => 비행기의 가로길이, 세로길이
 
@@ -153,10 +151,10 @@ ss.y = size[1] - ss.sy
 # 비행체가 움직이는 속도를 결정함
 ss.move = Speed.s_speed
 
+# 그림의 크기를 조정한다.
 # 게임의 배경화면 설정
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
-background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
-
+background_image_desert = pygame.transform.scale(background_image_desert,size) 
 
 
 
@@ -169,12 +167,6 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
-        if event.type == VIDEORESIZE:
-            screen_w = event.w
-            screen_h = event.h
-            block_size = int(screen_h*0.045)
-            
-            pygame.display.update()
     screen.fill(Color.black)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
@@ -230,13 +222,6 @@ while SB==0:
             elif event.key == pygame.K_DOWN:
                 Move.down_go = False
         
-        elif event.type == VIDEORESIZE:
-            screen_w = event.w
-            screen_h = event.h
-            block_size = int(screen_h*0.045)
-            
-            pygame.display.update()
-        
 
     
         # 4-3. 입력과 시간에 따른 변화 
@@ -244,7 +229,7 @@ while SB==0:
         # 코드실행 시점에서 현재시간과릐 차이를 초로 바꿈
     delta_time = (now_time - start_time).total_seconds()
 
-
+    
     # 버튼을 꾹 길게 눌렀을때 움직이게 하기
     # 왼쪽 방향키를 눌렀을 때
     if Move.left_go == True:
