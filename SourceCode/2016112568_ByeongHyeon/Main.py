@@ -17,9 +17,10 @@ pygame.init()
 
 # 2-2 플레이어의 컴퓨터 환경에 맞춘 화면의 크기 
 infoObject = pygame.display.Info()
+# 896 * 1020
 size = [infoObject.current_w//2,infoObject.current_h-100]
 screen = pygame.display.set_mode(size)
-
+print(size)
 title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
@@ -63,16 +64,18 @@ class Color:
 
 class Size:
     # 미사일의 x,y사이즈
-    m_xsize =5
-    m_ysize = 15
+    m_xsize = size[0]//179
+    m_ysize = size[1]//68
     # 미사일의 크기 조정(최대값, 최소값)
     min_size = 0
-    max_size = 40
-    block_size = 50
+    max_size = size[0]//23
+    block_size = size[0]//23
 
 class Speed:
     # 미사일의 스피드
     m_speed = 0 # 초기화`
+    # 비행체 스피드
+    s_speed =5
     # 미사일 빈도 조정 
     k=0
     create_rate_r = 0.995
@@ -146,7 +149,7 @@ ss.x = round(size[0]/2 - ss.sx/2)
 # 맨 밑에서 피사체의 y길이만큼 위로 올라와야함
 ss.y = size[1] - ss.sy
 # 비행체가 움직이는 속도를 결정함
-ss.move = 5
+ss.move = Speed.s_speed
 
 # 게임의 배경화면 설정
 background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
@@ -275,7 +278,7 @@ while SB==0:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
-        mm.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -307,7 +310,7 @@ while SB==0:
         missile1.stop()
         missile2.play()
         mm2 = obj()
-        mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm2.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
         mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
         mm2.y = ss.y -mm2.sy - 10
@@ -316,7 +319,7 @@ while SB==0:
 
 
     # 미사일의 발생 빈도 조절
-    Speed.  k+=1
+    Speed.k+=1
 
     # 피사체의 리스트를 초기화함
     # delete list
@@ -343,10 +346,13 @@ while SB==0:
         Size.min_size = 30 - Util.score//100
     else:
         Size.min_size = 20
+    
+    # score 400점마다 비행체의 속도 1씩 증가
+    Speed.s_speed = Speed.s_speed + Util.score//400
 
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
-    if random.random() > Speed.create_rate_c -(Util.score//100)*0.01:
+    if random.random() > 0.98 -(Util.score//100)*0.01:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
@@ -360,7 +366,7 @@ while SB==0:
         aa.move = 2 + (Util.score//300)
         Util.a_list.append(aa)
     
-    # 장해물 등장
+    # 장애물 등장
     if random.random() > Speed.create_rate_r:
         # 장애물 객체 생성
         block = obj()
@@ -369,7 +375,7 @@ while SB==0:
         block.change_size(Size.block_size, Size.block_size)
         block.x = 10
         block.y = random.randrange(0, size[0] - block.sx - round(ss.sx/2))
-        block.move = 2 + (Util.score//300)
+        block.move = 2 + (Util.score//100)
         Util.block_list.append(block)
 
     d2_list=[]
@@ -378,7 +384,7 @@ while SB==0:
         b.x += b.move
         if b.x >= size[0]:
             d2_list.append(i)
-    
+
     d2_list.reverse()
     for d2 in d2_list:
         del Util.block_list[d2]
@@ -392,7 +398,6 @@ while SB==0:
         # 외계인이 화면 밖으로 나갔다면 지워준다.
         if a.y >= size[1]:
             d_list.append(i)
-    
 
     # 메모리 효율을 위해 삭제
     # 앞에서 부터 지워지면 리스트가 앞당겨져서 오류가 일어나기때문에 reverse해주고 지워준다.
@@ -422,14 +427,20 @@ while SB==0:
 
 
     # del로 미사일과 외계인 삭제하기
-    for dm in dm_list:
-        del Util.m_list[dm]
-    for da in da_list:
-        del Util.a_list[da]
-        # 피사체 사망시 효과음
-        monster1.play()
-        # 피사체를 파괴한 횟수
-        Util.kill += 1
+    try:
+        for dm in dm_list:
+            del Util.m_list[dm]
+    except :
+        pass
+    try:
+        for da in da_list:
+            del Util.a_list[da]
+            # 피사체 사망시 효과음
+            monster1.play()
+            # 피사체를 파괴한 횟수
+            Util.kill += 1
+    except :
+        pass
 
     for i in range(len(Util.a_list)):
         a = Util.a_list[i]
@@ -443,7 +454,8 @@ while SB==0:
             SB = 1
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
             Util.GO = 1
-    
+
+
     for i in range(len(Util.block_list)):
         b = Util.block_list[i]
         # 만약 장애물과 ss가 부딛치면 게임 종료시킴
@@ -454,6 +466,11 @@ while SB==0:
             # while문 종료 키 
             SB =1
             Util.GO = 1
+
+
+
+
+
     # score 가 0 점이 되면 프로그램 종료
     if Util.score < 0:
         SB = 1
@@ -469,7 +486,6 @@ while SB==0:
         a.show()
     for d in Util.block_list:
         d.show()
-
     # 점수 산정
     Util.score = (Util.kill*5 - Util.loss*8)
     
@@ -518,7 +534,11 @@ pygame.quit()
 
 
 
+
+
 # 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
+
+
 # score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
 
 
@@ -535,9 +555,15 @@ pygame.quit()
 
 
 
+
+
 # 변수정리
 # 가로로 나오는 장애물 (격추안됨, 피하기만 해야함)
 # 1000 점 이상되면 가로 세로 막 졸라 (과제과제, 오픈소스 ) 10~15
-# 특정 스코어 이상이면 속도가 더 빠른 새로운 개체 생성
+
+# score 400점마다 비행체의 속도 1씩 증가
+# 선인장 장애물 생성
 
 
+# 해야할거
+# 점수가 증가하면 선인장의 크기도 증가
