@@ -372,8 +372,8 @@ while SB==0:
         block = obj()
         block.put_img('SourceCode/Image/CATUS.png')
         random_size = random.randrange(Size.min_size,Size.block_max_size)
-        # block.change_size(Size.block_size, Size.block_size)
         block.change_size(random_size, random_size)
+        # block.change_size(Size.block_size, Size.block_size)
         block.x = 10
         block.y = random.randrange(0, size[0] - block.sx - round(ss.sx/2))
         block.move = 2 + (Util.score//100)
