@@ -270,7 +270,7 @@ while SB==0:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
-        mm.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -302,7 +302,7 @@ while SB==0:
         missile1.stop()
         missile2.play()
         mm2 = obj()
-        mm2.put_img("SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg")
+        mm2.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
         mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
         mm2.y = ss.y -mm2.sy - 10
