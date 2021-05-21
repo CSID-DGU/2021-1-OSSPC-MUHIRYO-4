@@ -69,7 +69,7 @@ class Size:
     # 미사일의 크기 조정(최대값, 최소값)
     min_size = 0
     max_size = size[0]//23
-    block_size = size[0]//23
+    block_max_size = size[0]//10
 
 class Speed:
     # 미사일의 스피드
@@ -371,8 +371,9 @@ while SB==0:
         # 장애물 객체 생성
         block = obj()
         block.put_img('SourceCode/Image/CATUS.png')
-        # random_size = random.randrange(Size.min_size,Size.max_size)
-        block.change_size(Size.block_size, Size.block_size)
+        random_size = random.randrange(Size.min_size,Size.block_max_size)
+        # block.change_size(Size.block_size, Size.block_size)
+        block.change_size(random_size, random_size)
         block.x = 10
         block.y = random.randrange(0, size[0] - block.sx - round(ss.sx/2))
         block.move = 2 + (Util.score//100)
