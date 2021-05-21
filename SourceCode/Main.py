@@ -3,6 +3,8 @@ import random
 import time
 from datetime import datetime
 
+from pygame.constants import VIDEORESIZE
+
 # sx, sy => 피사체의 x위치 y 위치
 # x, y => 비행기의 가로길이, 세로길이
 
@@ -167,6 +169,12 @@ while SB==0:
         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
                 SB=1
+        if event.type == VIDEORESIZE:
+            screen_w = event.w
+            screen_h = event.h
+            block_size = int(screen_h*0.045)
+            
+            pygame.display.update()
     screen.fill(Color.black)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
@@ -221,6 +229,13 @@ while SB==0:
                 Move.up_go = False
             elif event.key == pygame.K_DOWN:
                 Move.down_go = False
+        
+        elif event.type == VIDEORESIZE:
+            screen_w = event.w
+            screen_h = event.h
+            block_size = int(screen_h*0.045)
+            
+            pygame.display.update()
         
 
     
@@ -372,8 +387,8 @@ while SB==0:
         block = obj()
         block.put_img('SourceCode/Image/CATUS.png')
         random_size = random.randrange(Size.min_size,Size.block_max_size)
-        # block.change_size(Size.block_size, Size.block_size)
         block.change_size(random_size, random_size)
+        # block.change_size(Size.block_size, Size.block_size)
         block.x = 10
         block.y = random.randrange(0, size[0] - block.sx - round(ss.sx/2))
         block.move = 2 + (Util.score//100)
