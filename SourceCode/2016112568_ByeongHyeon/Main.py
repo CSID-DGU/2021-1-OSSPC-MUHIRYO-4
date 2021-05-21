@@ -3,6 +3,8 @@ import random
 import time
 from datetime import datetime
 
+from pygame.constants import VIDEORESIZE
+
 # sx, sy => 피사체의 x위치 y 위치
 # x, y => 비행기의 가로길이, 세로길이
 
@@ -18,8 +20,8 @@ pygame.init()
 # 2-2 플레이어의 컴퓨터 환경에 맞춘 화면의 크기 
 infoObject = pygame.display.Info()
 # 896 * 1020
-size = [infoObject.current_w//2,infoObject.current_h-100]
-screen = pygame.display.set_mode(size)
+size = [infoObject.current_w//2,infoObject.current_h*8//9]
+screen = pygame.display.set_mode(size,pygame.RESIZABLE)
 print(size)
 title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
@@ -55,6 +57,8 @@ class Move:
     space_go = False
     # 게임의 FPS
     FPS = 60
+    # 객체의 변경된 위치변경의 Key
+    position = False
 
 class Color:
     # RGB 검정
@@ -63,12 +67,15 @@ class Color:
     white = (255,255,255)
 
 class Size:
+    # 비행체의 x,y사이즈
+    a_xsize = size[0]//18
+    a_ysize = size[1]//13
     # 미사일의 x,y사이즈
     m_xsize = size[0]//179
     m_ysize = size[1]//68
     # 미사일의 크기 조정(최대값, 최소값)
-    min_size = 0
-    max_size = size[0]//23
+    min_size = (size[0]//50 + size[1]//50)*2//3
+    max_size = (size[0]//30 + size[1]//30)*2//3
     block_max_size = size[0]//10
 
 class Speed:
@@ -135,14 +142,57 @@ def crash(a,b):
     else:
         return False
 
+def change_size_rate(size):
+    Size.a_xsize = size[0]//18
+    Size.a_ysize = size[1]//13
+    Size.m_xsize = size[0]//179
+    Size.m_ysize = size[1]//68
+    Size.min_size = size[0]//40 + size[1]//40
+    Size.max_size = size[0]//20 + size[1]//20
+    Size.block_max_size = size[0]//10
+    # 비행체 사이즈 변경
 
+
+    # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
+    if ss.x + ss.sx > size[0]:
+        ss.x = size[0]- ss.sx
+    # 바닥 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
+    if ss.y + ss.sy >size[1]:
+        ss.y = size[1] - ss.sy
+    # 비행체 객체의 사이즈 변경
+    ss.change_size(Size.a_xsize, Size.a_ysize)
+
+
+
+    
+        
+
+# 4-0 게임 시작 대기 화면(작은 event)
+SB=0
+while SB==0:
+    clock.tick(60)
+    for event in pygame.event.get(): # 이벤트가 있다면 
+        if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
+            if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
+                SB=1
+        elif event.type == pygame.VIDEORESIZE:
+            width, height = event.w, event.h
+            size =[width,height]
+            window = pygame.display.set_mode(size, pygame.RESIZABLE)
+    screen.fill(Color.black)
+    
+    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
+    text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
+    screen.blit(text_kill,(size[0]//2-(size[0]//2)//2,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+    
+    pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
 ss.put_img("SourceCode/Image/DesertLV1Car-removebg-preview.png")
-# 그림의 크기를 조정
-ss.change_size(50,80)
+# 그림(비행체)의 크기를 조정
+ss.change_size(Size.a_xsize,Size.a_ysize)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
 # x값의 절반에서 피사체의 길이의 절반만큼 왼쪽으로 이동해야 정확히 가운데임
 ss.x = round(size[0]/2 - ss.sx/2)
@@ -157,35 +207,14 @@ background_image_desert = pygame.transform.scale(background_image_desert,size) #
 
 
 
-
-
-# 4-0 게임 시작 대기 화면(작은 event)
-SB=0
-while SB==0:
-    clock.tick(60)
-    for event in pygame.event.get(): # 이벤트가 있다면 
-        if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
-            if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
-                SB=1
-    screen.fill(Color.black)
-    
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
-    text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(size[0]//2-(size[0]//2)//2,round((size[1]/2)-50))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
-    
-    pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
-
-
-
 # 4. 메인 이벤트
 #사막맵 배경음악 실행
-pygame.mixer.music.play(-1)
+# pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.3)
 # 코드를 첫 실행한 시간 저장
 start_time = datetime.now()
 SB=0
 while SB==0:
-    
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(Move.FPS)
@@ -199,6 +228,7 @@ while SB==0:
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
                 Move.left_go = True
+                print(1)
             if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
                 Move.right_go = True
             if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
@@ -222,7 +252,15 @@ while SB==0:
             elif event.key == pygame.K_DOWN:
                 Move.down_go = False
         
-
+        elif event.type == pygame.VIDEORESIZE:
+            width, height = event.w, event.h
+            size =[width,height]
+            window = pygame.display.set_mode(size, pygame.RESIZABLE)
+            Move.position = True
+    
+    # 마우스로 인해 화면이 작아지면 다른 객체들의 사이즈도 전부 변경
+    change_size_rate(size)
+    
     
         # 4-3. 입력과 시간에 따른 변화 
     now_time = datetime.now()
@@ -341,12 +379,6 @@ while SB==0:
     for d in d_list:
         del Util.m_list[d]
     
-    # score 100점 마다 피사체의 사이즈 1씩 감소
-    if 30 - Util.score//100 > 20:
-        Size.min_size = 30 - Util.score//100
-    else:
-        Size.min_size = 20
-    
     # score 400점마다 비행체의 속도 1씩 증가
     Speed.s_speed = Speed.s_speed + Util.score//400
 
@@ -357,7 +389,8 @@ while SB==0:
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
         # 피사체의 그림 크기 조정
-        random_size = random.randrange(Size.min_size,Size.max_size)
+        random_size = random.randint(Size.min_size*2//3,Size.max_size*2//3)
+        print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size))
         # 정사각형 모양의 피사체
         aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
@@ -371,11 +404,11 @@ while SB==0:
         # 장애물 객체 생성
         block = obj()
         block.put_img('SourceCode/Image/CATUS.png')
-        random_size = random.randrange(Size.min_size,Size.block_max_size)
+        random_size = random.randint(Size.min_size,Size.block_max_size)
         block.change_size(random_size, random_size)
         # block.change_size(Size.block_size, Size.block_size)
         block.x = 10
-        block.y = random.randrange(0, size[0] - block.sx - round(ss.sx/2))
+        block.y = random.randint(0, size[0] - block.sx - round(ss.sx/2))
         block.move = 2 + (Util.score//100)
         Util.block_list.append(block)
 
@@ -478,8 +511,12 @@ while SB==0:
     
 
     # 4-4. 그리기 
+    #  마우스에의해 창크기가 바뀜에 따라 배경화면 크기가 바뀜
+    background_image_desert = pygame.transform.scale(background_image_desert,size)
     screen.blit(background_image_desert,(0,0))
     
+
+
     ss.show()
     for m in Util.m_list:
         m.show()
@@ -568,3 +605,5 @@ pygame.quit()
 
 # 해야할거
 # 점수가 증가하면 선인장의 크기도 증가
+# 크기를 늘렸다가 줄렸다가 반복하면 피사체 객체의 이미지가 깨짐
+# 크기를 줄였다가 늘렸다가 할대 객체들의 위치도 이동이 되어야 함
