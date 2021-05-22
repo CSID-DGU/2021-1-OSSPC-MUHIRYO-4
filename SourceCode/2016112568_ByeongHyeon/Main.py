@@ -147,11 +147,9 @@ def change_size_rate(size):
     Size.a_ysize = size[1]//13
     Size.m_xsize = size[0]//179
     Size.m_ysize = size[1]//68
-    Size.min_size = size[0]//40 + size[1]//40
-    Size.max_size = size[0]//20 + size[1]//20
+    Size.min_size = (size[0]//50 + size[1]//50)*2//3
+    Size.max_size = (size[0]//30 + size[1]//30)*2//3
     Size.block_max_size = size[0]//10
-    # 비행체 사이즈 변경
-
 
     # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
     if ss.x + ss.sx > size[0]:
@@ -161,6 +159,19 @@ def change_size_rate(size):
         ss.y = size[1] - ss.sy
     # 비행체 객체의 사이즈 변경
     ss.change_size(Size.a_xsize, Size.a_ysize)
+    try:
+        # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
+        mm.change_size(Size.m_xsize,Size.m_ysize)
+    except :
+        pass
+    try:
+        # 점수가 아직 도달하지 못하여 mm2객체가 만들어지지 않았을 수도 있음
+        mm2.change_size(Size.m_xsize, Size.m_ysize)
+    except :
+        pass
+    aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+    random_size = random.randint(Size.min_size,Size.max_size)
+    aa.change_size(random_size,random_size)
 
 
 
@@ -259,7 +270,9 @@ while SB==0:
             Move.position = True
     
     # 마우스로 인해 화면이 작아지면 다른 객체들의 사이즈도 전부 변경
-    change_size_rate(size)
+    if Move.position is True:
+        change_size_rate(size)
+    
     
     
         # 4-3. 입력과 시간에 따른 변화 
@@ -389,10 +402,12 @@ while SB==0:
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
         # 피사체의 그림 크기 조정
-        random_size = random.randint(Size.min_size*2//3,Size.max_size*2//3)
-        print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size))
+        random_size = random.randint(Size.min_size,Size.max_size)
+        print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {} aa.sx : {} aa.sy : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size,aa.sx,aa.sy))
         # 정사각형 모양의 피사체
-        aa.change_size(random_size,random_size)
+        # 이미 사이즈가 한번 바뀌었으므로 다시 바뀔 필요가 없음 또 바꾸면 오류 발생
+        if Move.position is not True:
+            aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(0, size[0] - aa.sx - round(ss.sx/2))
         aa.y = 10
@@ -537,6 +552,7 @@ while SB==0:
     
     # 4-5. 업데이트
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
+    Move.position = False
 
 
 
