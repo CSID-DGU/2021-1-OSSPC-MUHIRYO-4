@@ -22,7 +22,10 @@ infoObject = pygame.display.Info()
 # 896 * 1020
 size = [infoObject.current_w//2,infoObject.current_h*8//9]
 screen = pygame.display.set_mode(size,pygame.RESIZABLE)
-print(size)
+
+
+
+# print(size)
 title = "My Game"
 pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 # 3. 게임 내 필요한 설정
@@ -158,7 +161,10 @@ def change_size_rate(size):
     if ss.y + ss.sy >size[1]:
         ss.y = size[1] - ss.sy
     # 비행체 객체의 사이즈 변경
-    ss.change_size(Size.a_xsize, Size.a_ysize)
+    try:
+        ss.change_size(Size.a_xsize, Size.a_ysize)
+    except :
+        pass
     try:
         # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -169,9 +175,20 @@ def change_size_rate(size):
         mm2.change_size(Size.m_xsize, Size.m_ysize)
     except :
         pass
-    aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
-    random_size = random.randint(Size.min_size,Size.max_size)
-    aa.change_size(random_size,random_size)
+    try:
+        random_size = random.randint(Size.min_size,Size.block_max_size)
+        block.change_size(Size.block_max_size,Size.block_max_size)
+    except :
+        pass
+    try:
+        aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+    except :
+        pass
+    try:
+        random_size = random.randint(Size.min_size,Size.max_size)
+        aa.change_size(random_size,random_size)
+    except :
+        pass
 
 
 
@@ -239,7 +256,6 @@ while SB==0:
             # 키를 떼고있는 상태 : False
             if event.key == pygame.K_LEFT:  # 만약 누른 키가 왼쪽 방향키 라면?
                 Move.left_go = True
-                print(1)
             if event.key == pygame.K_RIGHT:  # 만약 누른 키가 오른쪽 방향키 라면?
                 Move.right_go = True
             if event.key == pygame.K_SPACE:  # 만약 누른키가 space키 라면?
@@ -268,7 +284,7 @@ while SB==0:
             size =[width,height]
             window = pygame.display.set_mode(size, pygame.RESIZABLE)
             Move.position = True
-    
+
     # 마우스로 인해 화면이 작아지면 다른 객체들의 사이즈도 전부 변경
     if Move.position is True:
         change_size_rate(size)
@@ -403,7 +419,7 @@ while SB==0:
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
         # 피사체의 그림 크기 조정
         random_size = random.randint(Size.min_size,Size.max_size)
-        print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {} aa.sx : {} aa.sy : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size,aa.sx,aa.sy))
+        # print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {} aa.sx : {} aa.sy : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size,aa.sx,aa.sy))
         # 정사각형 모양의 피사체
         # 이미 사이즈가 한번 바뀌었으므로 다시 바뀔 필요가 없음 또 바꾸면 오류 발생
         if Move.position is not True:
@@ -531,12 +547,15 @@ while SB==0:
     screen.blit(background_image_desert,(0,0))
     
 
-
+    # 비행체 보여주기
     ss.show()
+    # 미사일 보여주기
     for m in Util.m_list:
         m.show()
+    # 피사체 보여주기
     for a in Util.a_list:
         a.show()
+    # 선인장 장애물 보여주기
     for d in Util.block_list:
         d.show()
     # 점수 산정
@@ -593,12 +612,6 @@ pygame.quit()
 # 점수가 올라감에 따라 더 작은 피사체가 나올수도있게 끔 해보자 !
 
 
-# score가 올라감에따라 피사체의 속도와미사일의 속도 그리고 피사체의 개수도 증가하는데 비행체의 속도는 증가하지 않았음
-
-
-
-
-
 # 채균
 # 첫화면 인터페이스 
 # 스코어별로 다른피사체 그림
@@ -614,12 +627,14 @@ pygame.quit()
 # 변수정리
 # 가로로 나오는 장애물 (격추안됨, 피하기만 해야함)
 # 1000 점 이상되면 가로 세로 막 졸라 (과제과제, 오픈소스 ) 10~15
-
 # score 400점마다 비행체의 속도 1씩 증가
 # 선인장 장애물 생성
 
 
 # 해야할거
+
 # 점수가 증가하면 선인장의 크기도 증가
-# 크기를 늘렸다가 줄렸다가 반복하면 피사체 객체의 이미지가 깨짐
-# 크기를 줄였다가 늘렸다가 할대 객체들의 위치도 이동이 되어야 함
+# 크기를 줄였다가 늘렸다가 할때 객체들의 위치도 이동이 되어야 함
+# 화면 크기조절 동영상 드리기 
+# 해야될꺼 보내드리기 
+
