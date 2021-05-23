@@ -28,17 +28,17 @@ clock = pygame.time.Clock()
 pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 #미사일 효과음
-missile1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound8.ogg")
+missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound8.ogg")
 missile1.set_volume(0.2)
-missile2 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound9 .ogg")
+missile2 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 missile2.set_volume(0.2)
-missile3 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound16.ogg")
+missile3 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound16.ogg")
 missile3.set_volume(0.2)
 #빌런 효과음
-monster1 = pygame.mixer.Sound("SourceCode\Sound\monster-sound7.ogg")
+monster1 = pygame.mixer.Sound("SourceCode/Sound/monster-sound7.ogg")
 monster1.set_volume(0.2)
 # 피사체와 비행체 충돌시 효과음
-boom1 = pygame.mixer.Sound("SourceCode\Sound\weapon-sound4.ogg")
+boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound4.ogg")
 boom1.set_volume(0.2)
 
 class obj:
