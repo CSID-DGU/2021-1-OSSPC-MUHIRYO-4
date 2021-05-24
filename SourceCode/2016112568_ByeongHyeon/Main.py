@@ -167,26 +167,31 @@ def change_size_rate(size):
         pass
     try:
         # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
-        mm.change_size(Size.m_xsize,Size.m_ysize)
+        for i in Util.m_list:
+            i.change_size(Size.m_xsize,Size.m_ysize)
     except :
         pass
-    try:
-        # 점수가 아직 도달하지 못하여 mm2객체가 만들어지지 않았을 수도 있음
-        mm2.change_size(Size.m_xsize, Size.m_ysize)
-    except :
-        pass
+    # try:
+    #     # 점수가 아직 도달하지 못하여 mm2객체가 만들어지지 않았을 수도 있음
+    #     for i in Util.m_list:
+    #         mm2.change_size(Size.m_xsize, Size.m_ysize)
+    # except :
+    #     pass
     try:
         random_size = random.randint(Size.min_size,Size.block_max_size)
-        block.change_size(Size.block_max_size,Size.block_max_size)
+        for i in Util.block_list:
+            i.change_size(Size.block_max_size,Size.block_max_size)
     except :
         pass
     try:
+        # 그림이 깨지는 경우가 생겨서 다시 이미지를 넣어줌
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
     except :
         pass
     try:
         random_size = random.randint(Size.min_size,Size.max_size)
-        aa.change_size(random_size,random_size)
+        for i in Util.a_list:
+            i.change_size(random_size,random_size)
     except :
         pass
 
@@ -634,7 +639,10 @@ pygame.quit()
 # 해야할거
 
 # 점수가 증가하면 선인장의 크기도 증가
-# 크기를 줄였다가 늘렸다가 할때 객체들의 위치도 이동이 되어야 함
+# 크기를 줄였다가 늘렸다가 할때 객체들의 위치도 이동이 되어야 함(가로로 발생하는 선인장 만 즉시반영이 안됨)
 # 화면 크기조절 동영상 드리기 
 # 해야될꺼 보내드리기 
+
+
+# 이전에는 사이즈 변경이 발생하면 비행체가 아닌다른 객체들은 새로 생성될때 변경사항이 적용되어 나타났지만 이제는 즉시 사이즈의 변경이 일어나도록 change_size_rate 안에 현상태를 직접 모든객체에 적용시키기위해 for loop를 돌려 각 객체마다 모든 변경사항을 적용시켜주고 게임을 실행 시ㅣㅁ
 
