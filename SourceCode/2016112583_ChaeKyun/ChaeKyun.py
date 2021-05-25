@@ -45,7 +45,6 @@ monster1.set_volume(0.3)
 boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 boom1.set_volume(0.2)
 
-
 class Move:
     # 좌방향 이동키
     left_go = False
@@ -165,43 +164,12 @@ def change_size_rate(size):
     ss.change_size(Size.a_xsize, Size.a_ysize)
 
 
-def show_mode():
-    menu.clear()
-    menu.add.button('Oasis')
-    menu.add.button('Hell')
-    menu.add.button('City')
-    menu.add.button('Back', back)
-    menu.add.button('Quit', pygame_menu.events.EXIT)
 
-def back():
-    menu.clear()
-    menu.add.button('Select mode', show_mode)
-    menu.add.button('Option', show_option)
-    menu.add.button('Help')
-    menu.add.button('Quit', pygame_menu.events.EXIT)
 
-def help():
-    menu.clear()
+        
 
-def show_option():
-    menu.clear()
-    menu.add.button('Sound')
-    menu.add.button('Back', back)
-    menu.add.button('Quit',pygame_menu.events.EXIT)
-menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
-mytheme = pygame_menu.themes.THEME_ORANGE.copy()
-mytheme.background_color = menu_image 
-menu = pygame_menu.Menu('MUHIRRYO GOOD', size[0], size[1], theme=mytheme)
-menu.add.button('Select mode', show_mode)
-menu.add.button('Option',show_option)
-menu.add.button('Help')
-menu.add.button('Quit',pygame_menu.events.EXIT)
-background = pygame.image.load("SourceCode/Image/StartImage.png")
-
-menu.mainloop(screen)
- 
 # 4-0 게임 시작 대기 화면(작은 event)
-SB=0
+SB = 0 
 while SB==0:
     clock.tick(60)
     for event in pygame.event.get(): # 이벤트가 있다면 
@@ -212,7 +180,7 @@ while SB==0:
             width, height = event.w, event.h
             size =[width,height]
             window = pygame.display.set_mode(size, pygame.RESIZABLE)
-
+    screen.fill(Color.black)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",20)
     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,(255,255,255)) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
@@ -246,13 +214,12 @@ background_image_desert = pygame.transform.scale(background_image_desert,size) #
 pygame.mixer.music.set_volume(0.3)
 # 코드를 첫 실행한 시간 저장
 start_time = datetime.now()
-
-
-
+SB=0
 while SB==0:
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(Move.FPS)
+    
     # 4-2. 각종 입력 감지 
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
         if event.type == pygame.QUIT: # x버튼을 눌렀을때!
@@ -350,7 +317,7 @@ while SB==0:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
-        mm.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
+        mm.put_img('SourceCode/Image/bullet.png')
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -382,7 +349,7 @@ while SB==0:
         missile1.stop()
         missile2.play()
         mm2 = obj()
-        mm2.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
+        mm2.put_img('SourceCode/Image/bullet.png')
         mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx*2)/3 -mm.sx/2)
         mm2.y = ss.y -mm2.sy - 10
