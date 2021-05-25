@@ -64,6 +64,10 @@ class Size:
     third_split_num = 3
 
     m_rand_size = 10
+
+    x_resize_rate = 1
+    y_resize_rate = 1
+
     
 
 class Speed:
@@ -223,58 +227,53 @@ def change_size_rate(size):
     # 비행체 객체의 사이즈 변경
     try:
         ss.change_size(Size.a_xsize, Size.a_ysize)
+        ss.x*=Size.x_resize_rate
+        ss.y*=Size.y_resize_rate
     except :
         pass
     try:
         # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
         for i in Util.m_list:
-            i.change_size(Size.m_xsize,Size.m_ysize)
+            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
     except :
         pass
-    # try:
-    #     # 점수가 아직 도달하지 못하여 mm2객체가 만들어지지 않았을 수도 있음
-    #     for i in Util.m_list:
-    #         mm2.change_size(Size.m_xsize, Size.m_ysize)
-    # except :
-    #     pass
     try:
         random_size = random.randint(Size.min_size,Size.block_max_size)
         for i in Util.block_list:
-            i.change_size(Size.block_max_size,Size.block_max_size)
-    except :
-        pass
-    try:
-        # 그림이 깨지는 경우가 생겨서 다시 이미지를 넣어줌
-        aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
+            i.x*=Size.x_resize_rate
+            i.y*=Size.y_resize_rate
     except :
         pass
     try:
         random_size = random.randint(Size.min_size,Size.max_size)
         for i in Util.a_list:
-            i.change_size(random_size,random_size)
+            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
+            i.x*=Size.x_resize_rate
+            i.y*=Size.y_resize_rate
     except :
         pass
 
 
 # 4-0 게임 시작 대기 화면(작은 event)
-SB=0
-while SB==0:
-    clock.tick(Move.FPS)
-    for event in pygame.event.get(): # 이벤트가 있다면 
-        if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
-            if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
-                SB=1
-        elif event.type == pygame.VIDEORESIZE:
-            width, height = event.w, event.h
-            size =[width,height]
-            window = pygame.display.set_mode(size, pygame.RESIZABLE)
-    screen.fill(Color.black)
+# SB=0
+# while SB==0:
+#     clock.tick(Move.FPS)
+#     for event in pygame.event.get(): # 이벤트가 있다면 
+#         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
+#             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
+#                 SB=1
+#         elif event.type == pygame.VIDEORESIZE:
+#             width, height = event.w, event.h
+#             size =[width,height]
+#             window = pygame.display.set_mode(size, pygame.RESIZABLE)
+#     screen.fill(Color.black)
     
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",FontSize.size_start)
-    text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,Color.white) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(size[0]//Size.half_split_num-(size[0]//Size.half_split_num)//Size.half_split_num,round((size[1]/Size.half_split_num)-FontSize.lensize_start))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+#     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",FontSize.size_start)
+#     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,Color.white) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
+#     screen.blit(text_kill,(size[0]//Size.half_split_num-(size[0]//Size.half_split_num)//Size.half_split_num,round((size[1]/Size.half_split_num)-FontSize.lensize_start))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
-    pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
+#     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
 # 객체 생성
 ss = obj()
@@ -342,6 +341,8 @@ while SB==0:
         
         elif event.type == pygame.VIDEORESIZE:
             width, height = event.w, event.h
+            Size.x_resize_rate = width/size[0]
+            Size.y_resize_rate = height/size[1]
             size =[width,height]
             window = pygame.display.set_mode(size, pygame.RESIZABLE)
             Move.position = True
