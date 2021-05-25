@@ -227,6 +227,8 @@ def change_size_rate(size):
     # 비행체 객체의 사이즈 변경
     try:
         ss.change_size(Size.a_xsize, Size.a_ysize)
+        ss.x*=Size.x_resize_rate
+        ss.y*=Size.y_resize_rate
     except :
         pass
     try:
