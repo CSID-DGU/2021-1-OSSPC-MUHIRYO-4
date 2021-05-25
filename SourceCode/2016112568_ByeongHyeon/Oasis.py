@@ -64,6 +64,10 @@ class Size:
     third_split_num = 3
 
     m_rand_size = 10
+
+    x_resize_rate = 1
+    y_resize_rate = 1
+
     
 
 class Speed:
@@ -228,30 +232,23 @@ def change_size_rate(size):
     try:
         # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
         for i in Util.m_list:
-            i.change_size(Size.m_xsize,Size.m_ysize)
+            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
     except :
         pass
-    # try:
-    #     # 점수가 아직 도달하지 못하여 mm2객체가 만들어지지 않았을 수도 있음
-    #     for i in Util.m_list:
-    #         mm2.change_size(Size.m_xsize, Size.m_ysize)
-    # except :
-    #     pass
     try:
         random_size = random.randint(Size.min_size,Size.block_max_size)
         for i in Util.block_list:
-            i.change_size(Size.block_max_size,Size.block_max_size)
-    except :
-        pass
-    try:
-        # 그림이 깨지는 경우가 생겨서 다시 이미지를 넣어줌
-        aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
+            i.x*=Size.x_resize_rate
+            i.y*=Size.y_resize_rate
     except :
         pass
     try:
         random_size = random.randint(Size.min_size,Size.max_size)
         for i in Util.a_list:
-            i.change_size(random_size,random_size)
+            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
+            i.x*=Size.x_resize_rate
+            i.y*=Size.y_resize_rate
     except :
         pass
 
@@ -342,6 +339,8 @@ while SB==0:
         
         elif event.type == pygame.VIDEORESIZE:
             width, height = event.w, event.h
+            Size.x_resize_rate = width/size[0]
+            Size.y_resize_rate = height/size[1]
             size =[width,height]
             window = pygame.display.set_mode(size, pygame.RESIZABLE)
             Move.position = True
