@@ -21,7 +21,7 @@ pygame.init()
 # 2-2 플레이어의 컴퓨터 환경에 맞춘 화면의 크기 
 infoObject = pygame.display.Info()
 # 896 * 1020
-size = [infoObject.current_w//2,infoObject.current_h*8//9]
+size = [infoObject.current_w,infoObject.current_h]
 screen = pygame.display.set_mode(size,pygame.RESIZABLE)
 print(size)
 title = "My Game"
