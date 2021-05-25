@@ -202,9 +202,11 @@ def crash(a,b):
     else:
         return False
 
+# 점수를 계산하는 함수
 def cal_score(kill,loss):
     Util.score = (Util.kill*5 - Util.loss*8)
 
+# 비율에 맞체 객체들의 크기를 바꾸는 함수
 def change_size_rate(size):
     Size.a_xsize = size[0]//18
     Size.a_ysize = size[1]//13
@@ -256,24 +258,24 @@ def change_size_rate(size):
 
 
 # 4-0 게임 시작 대기 화면(작은 event)
-SB=0
-while SB==0:
-    clock.tick(Move.FPS)
-    for event in pygame.event.get(): # 이벤트가 있다면 
-        if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
-            if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
-                SB=1
-        elif event.type == pygame.VIDEORESIZE:
-            width, height = event.w, event.h
-            size =[width,height]
-            window = pygame.display.set_mode(size, pygame.RESIZABLE)
-    screen.fill(Color.black)
+# SB=0
+# while SB==0:
+#     clock.tick(Move.FPS)
+#     for event in pygame.event.get(): # 이벤트가 있다면 
+#         if event.type == pygame.KEYDOWN: # 그 이벤트가 어떤 버튼을 누르는 것이라면
+#             if event.key == pygame.K_SPACE: # 그 버튼이 스페이스 버튼이라면?
+#                 SB=1
+#         elif event.type == pygame.VIDEORESIZE:
+#             width, height = event.w, event.h
+#             size =[width,height]
+#             window = pygame.display.set_mode(size, pygame.RESIZABLE)
+#     screen.fill(Color.black)
     
-    font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",FontSize.size_start)
-    text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,Color.white) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
-    screen.blit(text_kill,(size[0]//Size.half_split_num-(size[0]//Size.half_split_num)//Size.half_split_num,round((size[1]/Size.half_split_num)-FontSize.lensize_start))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
+#     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf",FontSize.size_start)
+#     text_kill = font.render("PRESS \"SPACE\" KEY TO START THE GAME",True,Color.white) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
+#     screen.blit(text_kill,(size[0]//Size.half_split_num-(size[0]//Size.half_split_num)//Size.half_split_num,round((size[1]/Size.half_split_num)-FontSize.lensize_start))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
     
-    pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
+#     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
 
 # 객체 생성
 ss = obj()
