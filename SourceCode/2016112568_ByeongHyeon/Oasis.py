@@ -137,20 +137,27 @@ class Sound:
     background_sound = 0.3
     
 
-class obj:
+class obj(pygame.sprite.Sprite):
     def __init__(self):
-        self.x =0
-        self.y=0
-        self.move =0
+        super().__init__()
+        self.x = 0
+        self.y = 0
+        self.move = 0
+        # self.img = 0
+        # self.rect =0 
+        # self.mask = 0
 
     def put_img(self,address):
         # png파일 일때
         # convert해줘야하는 문제가 있기때문에
         if address[-3:] == "png":
-            self.img = pygame.image.load(address).convert_alpha()    
+            self.img = pygame.image.load(address).convert_alpha() 
         else: 
             self.img = pygame.image.load(address)
+        self.mask = pygame.mask.from_surface(self.img)
+        self.rect = self.img.get_rect()
         self.sx, self.sy = self.img.get_size()
+        
 
     # 피사체의 그림 조정
     def change_size(self,sx,sy):
@@ -201,6 +208,20 @@ def crash(a,b):
             
     else:
         return False
+
+def crash2(a,b):
+    a.mask = pygame.mask.from_surface(a.img)
+    b.mask = pygame.mask.from_surface(b.img)
+    if(pygame.sprite.spritecollide(a,b,False)):
+        return True
+    else:
+        False
+
+
+    # if pygame.sprite.collide_mask(a,b):
+    #     return True
+    # else:
+    #     return False
 
 # 점수를 계산하는 함수
 def cal_score(kill,loss):
@@ -493,7 +514,7 @@ while SB==0:
         aa.y = Util.a_loc_10
         aa.move = Speed.a_init_speed + (Util.score//Util.score_300)
         Util.a_list.append(aa)
-    
+    group = pygame.sprite.Group()
     # 장애물 등장
     if random.random() > Speed.create_rate_r:
         # 장애물 객체 생성
@@ -505,7 +526,8 @@ while SB==0:
         block.x = Util.a_loc_10
         block.y = random.randint(0, size[0] - block.sx - round(ss.sx/Size.half_split_num))
         block.move = Speed.b_init_speed + (Util.score//Util.score_100)
-        Util.block_list.append(block)
+        # Util.block_list.append(block)
+        group.add(block)
 
     d2_list=[]
     for i in range(len(Util.block_list)):
@@ -543,10 +565,9 @@ while SB==0:
         for j in range(len(Util.a_list)):
             m = Util.m_list[i]
             a = Util.a_list[j]
-            if crash(m,a) is True:
+            if crash(m,a):
                 dm_list.append(i)
                 da_list.append(j)
-    
     # 미사일2개와 외계인 1개가 같이 만나는 경우가 있을 수도 있으니까 배제하기위해 중복제거를 해준다.
     dm_list = list(set(dm_list))
     da_list = list(set(da_list))
@@ -588,7 +609,7 @@ while SB==0:
     for i in range(len(Util.block_list)):
         b = Util.block_list[i]
         # 만약 장애물과 ss가 부딛치면 게임 종료시킴
-        if crash(b,ss) is True:
+        if crash2(ss,group) is True:
             # 부딛칠 때 효과음
             boom1.play()
             time.sleep(1)
@@ -620,6 +641,7 @@ while SB==0:
     # 선인장 장애물 보여주기
     for d in Util.block_list:
         d.show()
+    
     # 점수 산정
     # Util.score = (Util.kill*5 - Util.loss*8)
     cal_score(Util.kill, Util.loss)

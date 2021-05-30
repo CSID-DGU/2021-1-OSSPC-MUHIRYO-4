@@ -28,7 +28,7 @@ def help():
 
 def show_option():
     menu.clear()
-    menu.add.button('Sound')
+    menu.add.button('Sound') 
     menu.add.button('Back', back)
     menu.add.button('Quit',pygame_menu.events.EXIT)
 menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
