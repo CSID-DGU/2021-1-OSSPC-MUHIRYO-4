@@ -134,6 +134,7 @@ class Sound:
     m_sound = 0.2
     crash1_sound = 0.3
     crash2_sound = 0.2
+    game_over_sound = 0.3
     background_sound = 0.3
     
 
@@ -185,7 +186,9 @@ monster1.set_volume(Sound.crash1_sound)
 # 피사체와 비행체 충돌시 효과음
 boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 boom1.set_volume(Sound.crash2_sound)
-
+# 게임오버 효과음
+game_over = pygame.mixer.Sound("SourceCode/Sound/gameover.wav")
+game_over.set_volume(Sound.game_over_sound)
 
 
 
@@ -638,6 +641,7 @@ while SB==0:
 
 # 5. 게임종료(1. x키를 눌러서 게임이 종료된 경우, 2. 죽어서 게임이 종료된 경우)
 # 이건 게임오버가 된 상황!
+game_over.play()
 while Util.GO==1:
     clock.tick(Move.FPS)
     for event in pygame.event.get(): # 이벤트가 있다면 
