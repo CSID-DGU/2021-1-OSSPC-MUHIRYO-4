@@ -235,7 +235,7 @@ def change_size_rate(size):
     except :
         pass
     try:
-        # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
+        # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문에 try, except구문 사용
         for i in Util.m_list:
             i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
     except :
