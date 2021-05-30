@@ -2,7 +2,7 @@ import pygame
 import random
 import time
 from datetime import datetime
-import pygame_menu 
+import pygame_menu
 
 pygame.init()
 infoObject = pygame.display.Info()
@@ -10,7 +10,7 @@ size = [infoObject.current_w//2,infoObject.current_h*8//9]
 screen = pygame.display.set_mode(size,pygame.RESIZABLE)
 def show_mode():
     menu.clear()
-    menu.add.button('Oasis',start_the_game)
+    menu.add.button('Oasis',start_the_oasis)
     menu.add.button('Hell')
     menu.add.button('City')
     menu.add.button('Back', back)
@@ -29,9 +29,13 @@ def help():
 def show_help():
     menu.add.image(image_path='SourceCode/Image/howtoplay.png', angle=0, scale=(0.4, 0.4))
 
+def sound_on_off():
+    menu.add.toggle_switch('Sound Switch', True, onchange=pygame.mixer.unpause(), toggleswitch_id='sound_switch')
+
+
 def show_option():
     menu.clear()
-    menu.add.button('Sound')
+    menu.add.button('Sound',sound_on_off)
     menu.add.button('Window')
     menu.add.button('Back', back)
     menu.add.button('Quit',pygame_menu.events.EXIT)
@@ -44,6 +48,8 @@ menu.add.button('Option',show_option)
 menu.add.button('Help',show_help)
 menu.add.button('Quit',pygame_menu.events.EXIT)
 background = pygame.image.load("SourceCode/Image/StartImage.png")
-def start_the_game():
+def start_the_oasis():
     import ChaeKyun
+#def start_the_hell():
+#def start_the_school():    
 menu.mainloop(screen)
