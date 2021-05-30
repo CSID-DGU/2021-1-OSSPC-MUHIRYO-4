@@ -28,13 +28,13 @@ def help():
 
 def show_help():
     menu.add.image(image_path='SourceCode/Image/howtoplay.png', angle=0, scale=(0.4, 0.4))    
-    
+
 def sound_on_off():
     menu.add.toggle_switch('Sound Switch', True, onchange=pygame.mixer.unpause(), toggleswitch_id='sound_switch')
 
 def show_option():
     menu.clear()
-    menu.add.button('Sound')
+    menu.add.button('Sound',sound_on_off)
     menu.add.button('Back', back)
     menu.add.button('Quit',pygame_menu.events.EXIT)
 menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
