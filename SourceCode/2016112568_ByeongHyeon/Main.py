@@ -3,6 +3,7 @@ import random
 import time
 from datetime import datetime
 import pygame_menu 
+from os import system
 
 pygame.init()
 infoObject = pygame.display.Info()
@@ -42,4 +43,6 @@ menu.add.button('Quit',pygame_menu.events.EXIT)
 background = pygame.image.load("SourceCode/Image/StartImage.png")
 def start_the_game():
     import Oasis
-menu.mainloop(screen)
+    
+menu.mainloop(screen) 
+pygame.quit()
