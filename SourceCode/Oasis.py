@@ -221,12 +221,12 @@ def change_size_rate(size):
     FontSize.len_for_time = size[0]//6
     
 
-    # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
-    if ss.x + ss.sx > size[0]:
-        ss.x = size[0]- ss.sx
-    # 바닥 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
-    if ss.y + ss.sy >size[1]:
-        ss.y = size[1] - ss.sy
+    # # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
+    # if ss.x + ss.sx > size[0]:
+    #     ss.x = size[0]- ss.sx
+    # # 바닥 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
+    # if ss.y + ss.sy >size[1]:
+    #     ss.y = size[1] - ss.sy
     # 비행체 객체의 사이즈 변경
     try:
         ss.change_size(Size.a_xsize, Size.a_ysize)
@@ -683,9 +683,6 @@ pygame.quit()
 # 스코어 별로 다른 미사일 사운드 
 # 스코어 별로 다른 미사일 이미지 
 # 스코어 별로 다른 비행체 그림
-
-
-
 
 
 
