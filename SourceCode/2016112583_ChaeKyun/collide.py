@@ -20,7 +20,7 @@ class Star(object):
 obstacle = p.image.load('SourceCode/Image/Catus.png').convert_alpha()
 obstacle = p.transform.scale(obstacle, (100, 100))
 obstacle_mask = p.mask.from_surface(obstacle)
-bullet1 = p.image.load('SourceCode\Image\DesertLV1Car.png').convert_alpha()
+bullet1 = p.image.load('SourceCode/Image/DesertLV1Car.png').convert_alpha()
 bullet1 = p.transform.scale(bullet1, (75,75))
 bullet2 = p.image.load('SourceCode/Image/bullet.png').convert_alpha()
 bullet2 = p.transform.scale(bullet2, (75,75))
