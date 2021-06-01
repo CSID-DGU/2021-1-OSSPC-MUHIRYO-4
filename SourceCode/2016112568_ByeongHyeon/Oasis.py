@@ -221,7 +221,7 @@ def change_size_rate(size):
     FontSize.len_for_time = size[0]//6
     
 
-    # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
+    # # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
     # if ss.x + ss.sx > size[0]:
     #     ss.x = size[0]- ss.sx
     # # 바닥 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
