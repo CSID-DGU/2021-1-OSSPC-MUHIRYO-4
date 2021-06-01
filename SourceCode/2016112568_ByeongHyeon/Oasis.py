@@ -134,30 +134,24 @@ class Sound:
     m_sound = 0.2
     crash1_sound = 0.3
     crash2_sound = 0.2
+    game_over_sound = 0.3
     background_sound = 0.3
     
 
-class obj(pygame.sprite.Sprite):
+class obj:
     def __init__(self):
-        super().__init__()
-        self.x = 0
-        self.y = 0
-        self.move = 0
-        # self.img = 0
-        # self.rect =0 
-        # self.mask = 0
+        self.x =0
+        self.y=0
+        self.move =0
 
     def put_img(self,address):
         # png파일 일때
         # convert해줘야하는 문제가 있기때문에
         if address[-3:] == "png":
-            self.img = pygame.image.load(address).convert_alpha() 
+            self.img = pygame.image.load(address).convert_alpha()    
         else: 
             self.img = pygame.image.load(address)
-        self.mask = pygame.mask.from_surface(self.img)
-        self.rect = self.img.get_rect()
         self.sx, self.sy = self.img.get_size()
-        
 
     # 피사체의 그림 조정
     def change_size(self,sx,sy):
@@ -192,7 +186,9 @@ monster1.set_volume(Sound.crash1_sound)
 # 피사체와 비행체 충돌시 효과음
 boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
 boom1.set_volume(Sound.crash2_sound)
-
+# 게임오버 효과음
+game_over = pygame.mixer.Sound("SourceCode/Sound/gameover.wav")
+game_over.set_volume(Sound.game_over_sound)
 
 
 
@@ -209,25 +205,9 @@ def crash(a,b):
     else:
         return False
 
-def crash2(a,b):
-    a.mask = pygame.mask.from_surface(a.img)
-    b.mask = pygame.mask.from_surface(b.img)
-    if(pygame.sprite.spritecollide(a,b,False)):
-        return True
-    else:
-        False
-
-
-    # if pygame.sprite.collide_mask(a,b):
-    #     return True
-    # else:
-    #     return False
-
-# 점수를 계산하는 함수
 def cal_score(kill,loss):
     Util.score = (Util.kill*5 - Util.loss*8)
 
-# 비율에 맞체 객체들의 크기를 바꾸는 함수
 def change_size_rate(size):
     Size.a_xsize = size[0]//18
     Size.a_ysize = size[1]//13
@@ -242,11 +222,11 @@ def change_size_rate(size):
     
 
     # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
-    if ss.x + ss.sx > size[0]:
-        ss.x = size[0]- ss.sx
-    # 바닥 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
-    if ss.y + ss.sy >size[1]:
-        ss.y = size[1] - ss.sy
+    # if ss.x + ss.sx > size[0]:
+    #     ss.x = size[0]- ss.sx
+    # # 바닥 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
+    # if ss.y + ss.sy >size[1]:
+    #     ss.y = size[1] - ss.sy
     # 비행체 객체의 사이즈 변경
     try:
         ss.change_size(Size.a_xsize, Size.a_ysize)
@@ -255,7 +235,7 @@ def change_size_rate(size):
     except :
         pass
     try:
-        # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문
+        # 지금 현재 미사일을 발생시키지 않는 상태 일 수도 있기 때문에 try, except구문 사용
         for i in Util.m_list:
             i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
     except :
@@ -514,7 +494,7 @@ while SB==0:
         aa.y = Util.a_loc_10
         aa.move = Speed.a_init_speed + (Util.score//Util.score_300)
         Util.a_list.append(aa)
-    group = pygame.sprite.Group()
+    
     # 장애물 등장
     if random.random() > Speed.create_rate_r:
         # 장애물 객체 생성
@@ -526,8 +506,7 @@ while SB==0:
         block.x = Util.a_loc_10
         block.y = random.randint(0, size[0] - block.sx - round(ss.sx/Size.half_split_num))
         block.move = Speed.b_init_speed + (Util.score//Util.score_100)
-        # Util.block_list.append(block)
-        group.add(block)
+        Util.block_list.append(block)
 
     d2_list=[]
     for i in range(len(Util.block_list)):
@@ -565,9 +544,10 @@ while SB==0:
         for j in range(len(Util.a_list)):
             m = Util.m_list[i]
             a = Util.a_list[j]
-            if crash(m,a):
+            if crash(m,a) is True:
                 dm_list.append(i)
                 da_list.append(j)
+    
     # 미사일2개와 외계인 1개가 같이 만나는 경우가 있을 수도 있으니까 배제하기위해 중복제거를 해준다.
     dm_list = list(set(dm_list))
     da_list = list(set(da_list))
@@ -609,7 +589,7 @@ while SB==0:
     for i in range(len(Util.block_list)):
         b = Util.block_list[i]
         # 만약 장애물과 ss가 부딛치면 게임 종료시킴
-        if crash2(ss,group) is True:
+        if crash(b,ss) is True:
             # 부딛칠 때 효과음
             boom1.play()
             time.sleep(1)
@@ -641,7 +621,6 @@ while SB==0:
     # 선인장 장애물 보여주기
     for d in Util.block_list:
         d.show()
-    
     # 점수 산정
     # Util.score = (Util.kill*5 - Util.loss*8)
     cal_score(Util.kill, Util.loss)
@@ -662,6 +641,7 @@ while SB==0:
 
 # 5. 게임종료(1. x키를 눌러서 게임이 종료된 경우, 2. 죽어서 게임이 종료된 경우)
 # 이건 게임오버가 된 상황!
+game_over.play()
 while Util.GO==1:
     clock.tick(Move.FPS)
     for event in pygame.event.get(): # 이벤트가 있다면 
@@ -706,9 +686,6 @@ pygame.quit()
 
 
 
-
-
-
 # 변수정리
 # 가로로 나오는 장애물 (격추안됨, 피하기만 해야함)
 # 1000 점 이상되면 가로 세로 막 졸라 (과제과제, 오픈소스 ) 10~15
@@ -726,5 +703,5 @@ pygame.quit()
 
 # 이전에는 사이즈 변경이 발생하면 비행체가 아닌다른 객체들은 새로 생성될때 변경사항이 적용되어 나타났지만 이제는 즉시 사이즈의 변경이 일어나도록 change_size_rate 안에 현상태를 직접 모든객체에 적용시키기위해 for loop를 돌려 각 객체마다 모든 변경사항을 적용시켜주고 게임을 실행 시ㅣㅁ
 
-# 첫화면 사이즈 조절
-# 6월 10일까지 충돌판정 안료하기
+# 첫화면 사이즈 변경
+# 충돌 판정
