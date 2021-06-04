@@ -34,7 +34,7 @@ class Move:
     # 미사일 발사 키
     space_go = False
     # 게임의 FPS
-    FPS = 60
+    FPS = 70
     # 객체의 변경된 위치변경의 Key
     position = False
     # 객체들이 화면 밖으로 나갔는지 판정에 필요한 boundary 값
@@ -230,6 +230,22 @@ def crash(a,b):
             
     else:
         return False
+
+# 기존 충돌판정에서 모든 모서리의 x,y값을 가지고 겹치면 충돌이 일어나는 함수 생성
+# 직사각현 모양에서 발생했던 부딛치지 않았지만 부딛혔다고 판정된 문제 해결
+def crash2(a,b):
+    
+    a_mask = pygame.mask.from_surface(a.img)
+    b_mask = pygame.mask.from_surface(b.img)
+
+    offset = (int(b.x - a.x), int(b.y - a.y))
+    collision = a_mask.overlap(b_mask, offset)
+    
+    if collision:
+        return True
+    else:
+        return False
+
 
 def cal_score(kill,loss):
     Util.score = (Util.kill * Util.kill_score_cal - Util.loss * Util.loss_score_cal)
@@ -621,7 +637,7 @@ while SB==0:
     for i in range(len(Util.block_list)):
         b = Util.block_list[i]
         # 만약 장애물과 ss가 부딛치면 게임 종료시킴
-        if crash(b,ss) is True:
+        if crash2(b,ss) is True:
             # 부딛칠 때 효과음
             boom1.play()
             time.sleep(1)
