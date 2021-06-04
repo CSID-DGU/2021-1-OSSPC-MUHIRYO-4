@@ -43,6 +43,5 @@ menu.add.button('Quit',pygame_menu.events.EXIT)
 background = pygame.image.load("SourceCode/Image/StartImage.png")
 def start_the_game():
     import Oasis
-    
 menu.mainloop(screen) 
 pygame.quit()
