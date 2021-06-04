@@ -234,7 +234,6 @@ def crash(a,b):
 # 기존 충돌판정에서 모든 모서리의 x,y값을 가지고 겹치면 충돌이 일어나는 함수 생성
 # 직사각현 모양에서 발생했던 부딛치지 않았지만 부딛혔다고 판정된 문제 해결
 def crash2(a,b):
-    
     a_mask = pygame.mask.from_surface(a.img)
     b_mask = pygame.mask.from_surface(b.img)
 
