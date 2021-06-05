@@ -34,7 +34,7 @@ class Move:
     # 미사일 발사 키
     space_go = False
     # 게임의 FPS
-    FPS = 60
+    FPS = 85
     # 객체의 변경된 위치변경의 Key
     position = False
     # 객체들이 화면 밖으로 나갔는지 판정에 필요한 boundary 값
@@ -361,7 +361,7 @@ pygame.mixer.music.set_volume(Sound.background_sound)
 # 코드를 첫 실행한 시간 저장
 start_time = datetime.now()
 SB = 0
-while SB==0:
+while not SB:
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
     clock.tick(Move.FPS)
@@ -535,7 +535,7 @@ while SB==0:
 
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
-    if random.random() > Speed.create_rate_c -(Util.score//Util.score_200)//Util.score_100:
+    if random.random() > Speed.create_rate_c - (Util.score//Util.score_100)/Util.score_100:
         # 피사체 객체 생성
         aa = obj()
         aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
@@ -708,7 +708,7 @@ while SB==0:
 # 5. 게임종료(1. x키를 눌러서 게임이 종료된 경우, 2. 죽어서 게임이 종료된 경우)
 # 이건 게임오버가 된 상황!
 game_over.play()
-while Util.GO == 1:
+while Util.GO:
     clock.tick(Move.FPS)
 
     for event in pygame.event.get(): # 이벤트가 있다면 
