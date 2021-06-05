@@ -602,7 +602,7 @@ while not SB:
         for j in range(len(Util.a_list)):
             m = Util.m_list[i]
             a = Util.a_list[j]
-            if crash(m,a) is True:
+            if crash2(m,a) is True:
                 dm_list.append(i)
                 da_list.append(j)
     
