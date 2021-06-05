@@ -34,7 +34,7 @@ class Move:
     # 미사일 발사 키
     space_go = False
     # 게임의 FPS
-    FPS = 70
+    FPS = 60
     # 객체의 변경된 위치변경의 Key
     position = False
     # 객체들이 화면 밖으로 나갔는지 판정에 필요한 boundary 값
@@ -69,6 +69,11 @@ class Size:
 
     x_resize_rate = 1
     y_resize_rate = 1
+
+    err_x = 400
+    err_y = 500
+
+    standard_size = 30
 
 
 
@@ -289,13 +294,16 @@ def change_size_rate(size):
             i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
             i.x*=Size.x_resize_rate
             i.y*=Size.y_resize_rate
-            print(i.sx,i.sy,Size.x_resize_rate,Size.y_resize_rate)
+            
     except :
         pass
     try:
         random_size = random.randint(Size.min_size,Size.max_size)
         for i in Util.a_list:
-            i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
+            i.change_size(ceil(i.sx*Size.x_resize_rate),ceil(i.sy*Size.y_resize_rate))
+            if a.sx > Size.err_x or a.sy > Size.err_y:
+                i.change_size(Size.standard_size,Size.standard_size)
+                # print(a.sx,a.sy)
             i.x*=Size.x_resize_rate
             i.y*=Size.y_resize_rate
     except :
@@ -619,10 +627,12 @@ while SB==0:
     except :
         pass
 
+    
+
     for i in range(len(Util.a_list)):
         a = Util.a_list[i]
         # 만약 외계인이 ss 와 부딛치면 게임 종료
-        if crash(a,ss) is True:
+        if crash2(a,ss) is True:
             # 부딛칠 때 효과음
             boom1.play()
             # 1초뒤에 꺼지도록 함
@@ -665,6 +675,10 @@ while SB==0:
         m.show()
     # 피사체 보여주기
     for a in Util.a_list:
+        # print(a.sx,a.sy)
+        if a.sx> Size.err_x or a.sy > Size.err_y:
+            a.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+            a.change_size(Size.standard_size,Size.standard_size)
         a.show()
     # 선인장 장애물 보여주기
     for d in Util.block_list:
