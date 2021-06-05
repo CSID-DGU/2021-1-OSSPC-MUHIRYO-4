@@ -225,6 +225,7 @@ game_over.set_volume(Sound.game_over_sound)
 
 # 충돌이 일어났는지 확인하는 함수!
 # return 값이 boolean 타입임
+# 직사각형 형태로 충돌이 일어났음을 판단하는 함수
 def crash(a,b):
     # 요 범위 안에 있을때 충돌이 일어남
     if (a.x-b.sx <=b.x) and (b.x<=a.x + a.sx):
@@ -236,7 +237,7 @@ def crash(a,b):
     else:
         return False
 
-# 기존 충돌판정에서 모든 모서리의 x,y값을 가지고 겹치면 충돌이 일어나는 함수 생성
+# 기존 충돌판정에서 모든 모서리의 x,y값을 가지고 객체가 겹친다면 충돌이 일어나는 함수 생성
 # 직사각현 모양에서 발생했던 부딛치지 않았지만 부딛혔다고 판정된 문제 해결
 def crash2(a,b):
     a_mask = pygame.mask.from_surface(a.img)
@@ -288,8 +289,9 @@ def change_size_rate(size):
             i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
     except :
         pass
+    # 선인장 장애물의 resizing
+    # 선인장이 나타나지 않았을때 resizing 했을 수도 있으므로 try except로 error 잡아줌
     try:
-        random_size = random.randint(Size.min_size,Size.block_max_size)
         for i in Util.block_list:
             i.change_size(int(i.sx*Size.x_resize_rate),int(i.sy*Size.y_resize_rate))
             i.x*=Size.x_resize_rate
@@ -298,7 +300,6 @@ def change_size_rate(size):
     except :
         pass
     try:
-        random_size = random.randint(Size.min_size,Size.max_size)
         for i in Util.a_list:
             i.change_size(ceil(i.sx*Size.x_resize_rate),ceil(i.sy*Size.y_resize_rate))
             if a.sx > Size.err_x or a.sy > Size.err_y:
@@ -308,6 +309,7 @@ def change_size_rate(size):
             i.y*=Size.y_resize_rate
     except :
         pass
+    # FPS도 리사이징이 됨에따라 변화시켜주고 속도제어
     Move.FPS = int(Move.FPS*(Size.x_resize_rate+Size.y_resize_rate)/2)
     pygame.display.flip()
 
@@ -544,6 +546,7 @@ while SB==0:
         # 이미 사이즈가 한번 바뀌었으므로 다시 바뀔 필요가 없음 또 바꾸면 오류 발생
         if Move.position is not True:
             aa.change_size(random_size,random_size)
+        aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
         aa.x = random.randrange(1, size[0] - aa.sx - round(ss.sx/Size.half_split_num))
         aa.y = Util.a_loc_10
@@ -676,7 +679,7 @@ while SB==0:
     # 피사체 보여주기
     for a in Util.a_list:
         # print(a.sx,a.sy)
-        if a.sx> Size.err_x or a.sy > Size.err_y:
+        if (a.sx > Size.err_x) or (a.sy > Size.err_y):
             a.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
             a.change_size(Size.standard_size,Size.standard_size)
         a.show()
@@ -685,6 +688,7 @@ while SB==0:
         d.show()
     # 점수 산정
     # Util.score = (Util.kill*5 - Util.loss*8)
+    # 점수산정을 메소드화 하였음
     cal_score(Util.kill, Util.loss)
     
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf", FontSize.size_kill_loss)
