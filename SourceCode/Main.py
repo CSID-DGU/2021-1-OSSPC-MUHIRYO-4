@@ -11,14 +11,15 @@ size = [infoObject.current_w//2,infoObject.current_h*8//9]
 screen = pygame.display.set_mode(size,pygame.RESIZABLE)
 def show_mode():
     menu.clear()
-    menu.add.button('Oasis',start_the_game)
-    menu.add.button('Hell')
-    menu.add.button('City')
+    menu.add.button('Oasis',start_the_game_1)
+    menu.add.button('Ice',start_the_game_2)
+    menu.add.button('School')
     menu.add.button('Back', back)
     menu.add.button('Quit', pygame_menu.events.EXIT)
 
 def back():
     menu.clear()
+    
     menu.add.button('Select mode', show_mode)
     menu.add.button('Option', show_option)
     menu.add.button('Help')
@@ -41,7 +42,9 @@ menu.add.button('Option',show_option)
 menu.add.button('Help')
 menu.add.button('Quit',pygame_menu.events.EXIT)
 background = pygame.image.load("SourceCode/Image/StartImage.png")
-def start_the_game():
+def start_the_game_1():
     import Oasis
+def start_the_game_2():
+    import Ice
 menu.mainloop(screen) 
 pygame.quit()

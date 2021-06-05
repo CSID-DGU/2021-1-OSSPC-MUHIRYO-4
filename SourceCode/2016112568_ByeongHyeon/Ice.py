@@ -34,7 +34,7 @@ class Move:
     # 미사일 발사 키
     space_go = False
     # 게임의 FPS
-    FPS = 85
+    FPS = 60
     # 객체의 변경된 위치변경의 Key
     position = False
     # 객체들이 화면 밖으로 나갔는지 판정에 필요한 boundary 값
@@ -54,8 +54,8 @@ class Size:
     a_xsize = size[0]//18
     a_ysize = size[1]//13
     # 미사일의 x,y사이즈
-    m_xsize = size[0]//179
-    m_ysize = size[1]//68
+    m_xsize = size[0]//30
+    m_ysize = size[1]//20
     # 미사일의 크기 조정(최대값, 최소값)
     min_size = ceil((sum(size)//50)*2//3)
     max_size = ceil((sum(size)//30)*2//3)
@@ -349,7 +349,7 @@ ss.y = size[1] - ss.sy
 ss.move = Speed.s_speed
 
 # 게임의 배경화면 설정
-background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
+background_image_desert = pygame.image.load("SourceCode/Image/DESERT.jpeg")
 background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
 
 
@@ -467,7 +467,7 @@ while not SB:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
-        mm.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
+        mm.put_img('SourceCode/Image/MISSILE_2.png')
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -499,7 +499,7 @@ while not SB:
         missile1.stop()
         missile2.play()
         mm2 = obj()
-        mm2.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
+        mm2.put_img('SourceCode/Image/MISSILE_2.png')
         mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx * Size.half_split_num) / Size.third_split_num - mm.sx / Size.half_split_num)
         mm2.y = ss.y - mm2.sy - Util.m_loc_10
@@ -666,7 +666,7 @@ while not SB:
 
     # 4-4. 그리기 
     #  마우스에의해 창크기가 바뀜에 따라 배경화면 크기가 바뀜
-    background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
+    background_image_desert = pygame.image.load("SourceCode/Image/DESERT.jpeg")
     background_image_desert = pygame.transform.scale(background_image_desert, size)
     screen.blit(background_image_desert, Util.start_loc)
     

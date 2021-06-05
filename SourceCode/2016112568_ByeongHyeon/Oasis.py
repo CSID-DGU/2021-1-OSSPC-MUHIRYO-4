@@ -34,7 +34,7 @@ class Move:
     # 미사일 발사 키
     space_go = False
     # 게임의 FPS
-    FPS = 85
+    FPS = 70
     # 객체의 변경된 위치변경의 Key
     position = False
     # 객체들이 화면 밖으로 나갔는지 판정에 필요한 boundary 값
@@ -51,15 +51,15 @@ class Color:
 
 class Size:
     # 비행체의 x,y사이즈
-    a_xsize = size[0]//18
-    a_ysize = size[1]//13
+    a_xsize = size[0]//9
+    a_ysize = size[1]//8
     # 미사일의 x,y사이즈
-    m_xsize = size[0]//179
-    m_ysize = size[1]//68
-    # 미사일의 크기 조정(최대값, 최소값)
-    min_size = ceil((sum(size)//50)*2//3)
-    max_size = ceil((sum(size)//30)*2//3)
-    block_max_size = size[0]//10
+    m_xsize = size[0]//30
+    m_ysize = size[1]//20
+    # 크기 조정(최대값, 최소값)
+    min_size = ceil((sum(size)//50)*2)
+    max_size = ceil((sum(size)//30)*2)
+    block_max_size = size[0]//5
     # 2등분 3등분 값을 찾기위한 num
     half_split_num = 2
     third_split_num = 3
@@ -149,21 +149,21 @@ class Sound:
     background_sound = 0.3
 
 class Resizing:
-    a_xsize = 18
-    a_ysize = 13
-    m_xsize = 179
-    m_ysize = 68
-
+    a_xsize = 9
+    a_ysize = 8
+    m_xsize = 30
+    m_ysize = 20
     min_size_rel = 50
     max_size_rel = 30
-    min_size =  2 / 3
-    max_size =  2 / 3
+    min_size =  2 
+    max_size =  2
 
-    block_max_size = 10
+    block_max_size = 5
 
     size_kill_loss = 85
     size_gameover = 47
     len_for_time = 6
+
 
 
     
@@ -277,7 +277,7 @@ def change_size_rate(size):
     #     ss.y = size[1] - ss.sy
     # 비행체 객체의 사이즈 변경
     try:
-        ss.put_img("SourceCode/Image/DesertLV1Car-removebg-preview.png")
+        ss.put_img("SourceCode/Image/DesrtCar.png")
         ss.change_size(Size.a_xsize, Size.a_ysize)
         ss.x*=Size.x_resize_rate
         ss.y*=Size.y_resize_rate
@@ -337,7 +337,7 @@ def change_size_rate(size):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/DesertLV1Car-removebg-preview.png")
+ss.put_img("SourceCode/Image/DesrtCar.png")
 # 그림(비행체)의 크기를 조정
 ss.change_size(Size.a_xsize,Size.a_ysize)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
@@ -349,7 +349,7 @@ ss.y = size[1] - ss.sy
 ss.move = Speed.s_speed
 
 # 게임의 배경화면 설정
-background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
+background_image_desert = pygame.image.load("SourceCode/Image/DESERT.jpeg")
 background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
 
 
@@ -467,7 +467,7 @@ while not SB:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
-        mm.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
+        mm.put_img('SourceCode/Image/MISSILE_2.png')
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -499,7 +499,7 @@ while not SB:
         missile1.stop()
         missile2.play()
         mm2 = obj()
-        mm2.put_img('SourceCode/Image/pngtree-brass-bullet-shells-png-image_3258604.jpeg')
+        mm2.put_img('SourceCode/Image/MISSILE_2.png')
         mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx * Size.half_split_num) / Size.third_split_num - mm.sx / Size.half_split_num)
         mm2.y = ss.y - mm2.sy - Util.m_loc_10
@@ -535,10 +535,10 @@ while not SB:
 
 
     # score 가 10점 증가함에따라 피사체 발생 개수 0.01확률 증가 
-    if random.random() > Speed.create_rate_c - (Util.score//Util.score_100)/Util.score_100:
+    if random.random() > Speed.create_rate_c - (Util.score//Util.score_200)/Util.score_100:
         # 피사체 객체 생성
         aa = obj()
-        aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+        aa.put_img("SourceCode/Image/Scorphion.png")
         # 피사체의 그림 크기 조정
         random_size = random.randint(Size.min_size,Size.max_size)
         # print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {} aa.sx : {} aa.sy : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size,aa.sx,aa.sy))
@@ -557,11 +557,11 @@ while not SB:
     if random.random() > Speed.create_rate_r:
         # 장애물 객체 생성
         block = obj()
-        block.put_img('SourceCode/Image/CATUS.png')
+        block.put_img('SourceCode/Image/Catus.png')
         random_size = random.randint(Size.min_size,Size.block_max_size)
         block.change_size(random_size, random_size)
         # block.change_size(Size.block_size, Size.block_size)
-        block.x = Util.a_loc_10
+        block.x = Util.start_loc[0] - block.sx
         block.y = random.randint(1, size[0] - block.sx - round(ss.sx/Size.half_split_num))
         block.move = Speed.b_init_speed + (Util.score//Util.score_100)
         Util.block_list.append(block)
@@ -666,7 +666,7 @@ while not SB:
 
     # 4-4. 그리기 
     #  마우스에의해 창크기가 바뀜에 따라 배경화면 크기가 바뀜
-    background_image_desert = pygame.image.load("SourceCode/Image/Desertmap.png")
+    background_image_desert = pygame.image.load("SourceCode/Image/DESERT.jpeg")
     background_image_desert = pygame.transform.scale(background_image_desert, size)
     screen.blit(background_image_desert, Util.start_loc)
     
@@ -680,7 +680,7 @@ while not SB:
     for a in Util.a_list:
         # print(a.sx,a.sy)
         if (a.sx > Size.err_x) or (a.sy > Size.err_y):
-            a.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+            a.put_img("SourceCode/Image/Scorphion.png")
             a.change_size(Size.standard_size,Size.standard_size)
         a.show()
     # 선인장 장애물 보여주기
