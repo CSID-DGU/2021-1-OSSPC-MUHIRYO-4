@@ -75,6 +75,11 @@ class Size:
 
     standard_size = 30
 
+    rand_min_size = 1
+
+    x = 0
+    y = 1
+
 
 
 class Speed:
@@ -96,6 +101,8 @@ class Speed:
     a_init_speed = 2
     m_init_speed = 2
     b_init_speed = 2
+
+    speed_end_point = 0
     
     
     
@@ -128,6 +135,13 @@ class Util:
 
     kill_score_cal = 5
     loss_score_cal = 8
+
+    missile_rate = 1
+
+    obj_num = 1
+    time_sleep = 1
+
+    end_point = 0 
 
 
 class FontSize:
@@ -257,16 +271,16 @@ def cal_score(kill,loss):
 
 def change_size_rate(size):
     
-    Size.a_xsize = size[0] // Resizing.a_xsize
-    Size.a_ysize = size[1] // Resizing.a_ysize
-    Size.m_xsize = size[0] // Resizing.m_xsize
-    Size.m_ysize = size[1] // Resizing.m_ysize
+    Size.a_xsize = size[Size.x] // Resizing.a_xsize
+    Size.a_ysize = size[Size.y] // Resizing.a_ysize
+    Size.m_xsize = size[Size.x] // Resizing.m_xsize
+    Size.m_ysize = size[Size.y] // Resizing.m_ysize
     Size.min_size = ceil((sum(size) // Resizing.min_size_rel ) * Resizing.min_size)
     Size.max_size = ceil((sum(size) // Resizing.max_size_rel ) * Resizing.max_size)
-    Size.block_max_size = size[0] // Resizing.block_max_size
+    Size.block_max_size = size[Size.x] // Resizing.block_max_size
     FontSize.size_kill_loss = sum(size) // Resizing.size_kill_loss
     FontSize.size_gameover = sum(size) // Resizing.size_gameover
-    FontSize.len_for_time = size[0] // Resizing.len_for_time
+    FontSize.len_for_time = size[Size.x] // Resizing.len_for_time
     
     
     # # 오른쪽 끝 선에서 크기를 줄일 시 객체가 화면 밖으로 못나가게 제한 함
@@ -310,7 +324,7 @@ def change_size_rate(size):
     except :
         pass
     # FPS도 리사이징이 됨에따라 변화시켜주고 속도제어
-    Move.FPS = int(Move.FPS*(Size.x_resize_rate+Size.y_resize_rate)/2)
+    Move.FPS = int(Move.FPS*(Size.x_resize_rate+Size.y_resize_rate)/Size.half_split_num)
     pygame.display.flip()
 
 
@@ -342,9 +356,9 @@ ss.put_img("SourceCode/Image/DesrtCar.png")
 ss.change_size(Size.a_xsize,Size.a_ysize)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
 # x값의 절반에서 피사체의 길이의 절반만큼 왼쪽으로 이동해야 정확히 가운데임
-ss.x = round(size[0]/Size.half_split_num - ss.sx/Size.half_split_num)
+ss.x = round(size[Size.x]/Size.half_split_num - ss.sx/Size.half_split_num)
 # 맨 밑에서 피사체의 y길이만큼 위로 올라와야함
-ss.y = size[1] - ss.sy
+ss.y = size[Size.y] - ss.sy
 # 비행체가 움직이는 속도를 결정함
 ss.move = Speed.s_speed
 
@@ -360,7 +374,7 @@ pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(Sound.background_sound)
 # 코드를 첫 실행한 시간 저장
 start_time = datetime.now()
-SB = 0
+SB = False
 while not SB:
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
@@ -369,7 +383,7 @@ while not SB:
     # 4-2. 각종 입력 감지 
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
         if event.type == pygame.QUIT: # x버튼을 눌렀을때!
-            SB=1 # SB 가 1이되면 while문을 빠져나오게 된다!
+            SB = True # SB 가 1이되면 while문을 빠져나오게 된다!
         if event.type == pygame.KEYDOWN: # 어떤 키를 눌렀을때!(키보드가 눌렸을 때)
             # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
@@ -400,8 +414,8 @@ while not SB:
         
         elif event.type == pygame.VIDEORESIZE:
             width, height = event.w, event.h
-            Size.x_resize_rate = width / size[0]
-            Size.y_resize_rate = height / size[1]
+            Size.x_resize_rate = width / size[Size.x]
+            Size.y_resize_rate = height / size[Size.y]
             size =[width,height]
             window = pygame.display.set_mode(size, pygame.RESIZABLE)
             Move.position = True
@@ -432,9 +446,9 @@ while not SB:
     elif Move.right_go == True:
         ss.x += ss.move
         # 오른쪽 끝에서 비행선의 가로크기만큼 빼줘야한다
-        if ss.x >= size[0] - ss.sx:
+        if ss.x >= size[Size.x] - ss.sx:
             # 더 이상 오른쪽 바깥으로 못나가게 오른쪽 끝값으로 초기화
-            ss.x = size[0] - ss.sx
+            ss.x = size[Size.x] - ss.sx
     # 윗 방향키를 눌렀을때
     # 윗 방향키를 elif에서 if로 시작
     # 좌우와 상하가 독립된 상태로 구분됨
@@ -448,9 +462,9 @@ while not SB:
     elif Move.down_go == True:
         ss.y += ss.move
         # 게임화면 위쪽 화면으로 나가는 경우
-        if ss.y >= size[1] - ss.sy:
+        if ss.y >= size[Size.y] - ss.sy:
             # 더이상 나가지 못하게 위치값 고정
-            ss.y = size[1] - ss.sy
+            ss.y = size[Size.y] - ss.sy
 
 
     # 미사일의 속도 조정
@@ -463,7 +477,7 @@ while not SB:
 
     # 점수와 관련해서 미사일의 속도를 바꾸면 좋을듯 !
     # k%6 이면 미사일의 발생 확률을 1/6으로  낮춤!
-    if (Move.space_go == True) and Speed.k % m_speed == 0:
+    if (Move.space_go == True) and Speed.k % m_speed == Speed.speed_end_point:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
@@ -494,7 +508,7 @@ while not SB:
 
     # 점수가 200점 이상이라면 미사일이 한개 더 늘어남
     # 점수가 400점 이상이라면 미사일의 발사 형태가 바뀜
-    if (Move.space_go == True) and (Speed.k%m_speed == 0) and Util.score >= Util.score_200:
+    if (Move.space_go == True) and (Speed.k%m_speed == Speed.speed_end_point) and Util.score >= Util.score_200:
         # 두번째 미사일 객체 생성
         missile1.stop()
         missile2.play()
@@ -508,7 +522,7 @@ while not SB:
 
 
     # 미사일의 발생 빈도 조절
-    Speed.k += 1
+    Speed.k += Util.missile_rate
 
     # 피사체의 리스트를 초기화함
     # delete list
@@ -548,7 +562,7 @@ while not SB:
             aa.change_size(random_size,random_size)
         aa.change_size(random_size,random_size)
         # 0부터 오른쪽 끝까지의 랜덤변수인데 비행기크기보다 작으므로 미사일을 안맞는 외계인도 고려해야함(비행선크기/2 를 뺴줘야함)
-        aa.x = random.randrange(1, size[0] - aa.sx - round(ss.sx/Size.half_split_num))
+        aa.x = random.randrange(Size.rand_min_size, size[Size.x] - aa.sx - round(ss.sx/Size.half_split_num))
         aa.y = Util.a_loc_10
         aa.move = Speed.a_init_speed + (Util.score//Util.score_300)
         Util.a_list.append(aa)
@@ -561,8 +575,8 @@ while not SB:
         random_size = random.randint(Size.min_size,Size.block_max_size)
         block.change_size(random_size, random_size)
         # block.change_size(Size.block_size, Size.block_size)
-        block.x = Util.start_loc[0] - block.sx
-        block.y = random.randint(1, size[0] - block.sx - round(ss.sx/Size.half_split_num))
+        block.x = Util.start_loc[Size.x] - block.sx
+        block.y = random.randint(Size.rand_min_size, size[Size.x] - block.sx - round(ss.sx/Size.half_split_num))
         block.move = Speed.b_init_speed + (Util.score//Util.score_100)
         Util.block_list.append(block)
 
@@ -570,7 +584,7 @@ while not SB:
     for i in range(len(Util.block_list)):
         b = Util.block_list[i]
         b.x += b.move
-        if b.x >= size[0]:
+        if b.x >= size[Size.x]:
             d2_list.append(i)
 
     d2_list.reverse()
@@ -584,7 +598,7 @@ while not SB:
         a = Util.a_list[i]
         a.y += a.move
         # 외계인이 화면 밖으로 나갔다면 지워준다.
-        if a.y >= size[1]:
+        if a.y >= size[Size.y]:
             d_list.append(i)
 
     # 메모리 효율을 위해 삭제
@@ -593,7 +607,7 @@ while not SB:
     for d in d_list:
         del Util.a_list[d]
         # 외계인이 화면 밖으로 나간 횟수
-        Util.loss += 1
+        Util.loss += Util.obj_num
 
     dm_list = []
     da_list = []
@@ -626,7 +640,7 @@ while not SB:
             # 피사체 사망시 효과음
             monster1.play()
             # 피사체를 파괴한 횟수
-            Util.kill += 1
+            Util.kill += Util.obj_num
     except :
         pass
 
@@ -639,11 +653,11 @@ while not SB:
             # 부딛칠 때 효과음
             boom1.play()
             # 1초뒤에 꺼지도록 함
-            time.sleep(1)
+            time.sleep(Util.time_sleep)
             # while 문이 종료되도록 하는 key
-            SB = 1
+            SB = True
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
-            Util.GO = 1
+            Util.GO = True
 
 
     for i in range(len(Util.block_list)):
@@ -652,15 +666,15 @@ while not SB:
         if crash2(b,ss) is True:
             # 부딛칠 때 효과음
             boom1.play()
-            time.sleep(1)
+            time.sleep(Util.time_sleep)
             # while문 종료 키 
-            SB =1
-            Util.GO = 1
+            SB = True
+            Util.GO = True
 
 
     # score 가 0 점이 되면 프로그램 종료
-    if Util.score < 0:
-        SB = 1
+    if Util.score < Util.end_point:
+        SB = True
     
 
 
@@ -697,7 +711,7 @@ while not SB:
     
     # 현재 흘러간 시간
     text_time = font.render("Time : {:.2f}".format(delta_time), True, Color.purple)
-    screen.blit(text_time,(size[0]-FontSize.len_for_time, FontSize.len_for_time_ysize))
+    screen.blit(text_time,(size[Size.x]-FontSize.len_for_time, FontSize.len_for_time_ysize))
     
     # 4-5. 업데이트
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
@@ -713,15 +727,15 @@ while Util.GO:
 
     for event in pygame.event.get(): # 이벤트가 있다면 
         if event.type == pygame.QUIT:
-            Util.GO=0
+            Util.GO = False
         if event.type == pygame.VIDEORESIZE:
             width, height = event.w, event.h
-            Size.x_resize_rate = width / size[0]
-            Size.y_resize_rate = height / size[1]
+            Size.x_resize_rate = width / size[Size.x]
+            Size.y_resize_rate = height / size[Size.y]
             size =[width, height]
             window = pygame.display.set_mode(size, pygame.RESIZABLE)
             Move.position = True
-    
+
         
     background_image_desert = pygame.transform.scale(background_image_desert, size)
     screen.blit(background_image_desert, Util.start_loc)
@@ -730,7 +744,7 @@ while Util.GO:
     font = pygame.font.Font("SourceCode/Font/DXHanlgrumStd-Regular.otf", FontSize.size_gameover)
     text_kill = font.render("GAME OVER", True, Color.red) # 폰트가지고 랜더링 하는데 표시할 내용, True는 글자가 잘 안깨지게 하는 거임 걍 켜두기, 글자의 색깔
     # screen.blit(text_kill,(size[0] // Size.half_split_num - (size[0] // Size.half_split_num) // Size.half_split_num + FontSize.lensize_gameover, round((size[1] / Size.half_split_num) - FontSize.lensize_gameover))) # 이미지화 한 텍스트라 이미지를 보여준다고 생각하면 됨 
-    screen.blit(text_kill, (size[0] * Size.three_five - FontSize.size_gameover, size[1]//Size.half_split_num ))
+    screen.blit(text_kill, (size[Size.x] * Size.three_five - FontSize.size_gameover, size[Size.y]//Size.half_split_num ))
     pygame.display.flip() # 그려왔던게 화면에 업데이트가 됨
     Move.position = False
 

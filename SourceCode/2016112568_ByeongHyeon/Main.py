@@ -46,5 +46,8 @@ def start_the_game_1():
     import Oasis
 def start_the_game_2():
     import Ice
+def start_the_game_3():
+    # import School
+    pass
 menu.mainloop(screen) 
 pygame.quit()

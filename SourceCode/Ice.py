@@ -50,15 +50,15 @@ class Color:
     yellow = (255,255,0)
 
 class Size:
-    # 비행체의 x,y사이즈
+    # 피사체의 x,y사이즈
     a_xsize = size[0]//18
     a_ysize = size[1]//13
     # 미사일의 x,y사이즈
     m_xsize = size[0]//30
     m_ysize = size[1]//20
     # 미사일의 크기 조정(최대값, 최소값)
-    min_size = ceil((sum(size)//50)*2//3)
-    max_size = ceil((sum(size)//30)*2//3)
+    min_size = ceil((sum(size)//40))
+    max_size = ceil((sum(size)//20))
     block_max_size = size[0]//10
     # 2등분 3등분 값을 찾기위한 num
     half_split_num = 2
@@ -96,9 +96,7 @@ class Speed:
     a_init_speed = 2
     m_init_speed = 2
     b_init_speed = 2
-    
-    
-    
+
 
 class Util:
     # 미사일을 발사할때 미사일 객체가 저장되는 리스트 공간
@@ -129,6 +127,12 @@ class Util:
     kill_score_cal = 5
     loss_score_cal = 8
 
+    missile_rate = 1
+
+    obj_num = 1
+
+    sleep_time = 1
+
 
 class FontSize:
     size_start = 20
@@ -151,13 +155,13 @@ class Sound:
 class Resizing:
     a_xsize = 18
     a_ysize = 13
-    m_xsize = 179
-    m_ysize = 68
+    m_xsize = 30
+    m_ysize = 20
 
-    min_size_rel = 50
-    max_size_rel = 30
-    min_size =  2 / 3
-    max_size =  2 / 3
+    min_size_rel = 40
+    max_size_rel = 20
+    min_size =  1
+    max_size =  1
 
     block_max_size = 10
 
@@ -165,8 +169,6 @@ class Resizing:
     size_gameover = 47
     len_for_time = 6
 
-
-    
 
 
 class obj:
@@ -349,7 +351,7 @@ ss.y = size[1] - ss.sy
 ss.move = Speed.s_speed
 
 # 게임의 배경화면 설정
-background_image_desert = pygame.image.load("SourceCode/Image/DESERT.jpeg")
+background_image_desert = pygame.image.load("SourceCode/Image/Antartic.png")
 background_image_desert = pygame.transform.scale(background_image_desert,size) # 그림의 크기를 조정한다.
 
 
@@ -360,7 +362,7 @@ pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(Sound.background_sound)
 # 코드를 첫 실행한 시간 저장
 start_time = datetime.now()
-SB = 0
+SB = False
 while not SB:
     # 4-1. FPS 설정 
     # FPS를 60으로 설정함
@@ -369,7 +371,7 @@ while not SB:
     # 4-2. 각종 입력 감지 
     for event in pygame.event.get():  # 어떤 동작을 했을때 그 동작을 받아옴
         if event.type == pygame.QUIT: # x버튼을 눌렀을때!
-            SB=1 # SB 가 1이되면 while문을 빠져나오게 된다!
+            SB = True # SB 가 1이되면 while문을 빠져나오게 된다!
         if event.type == pygame.KEYDOWN: # 어떤 키를 눌렀을때!(키보드가 눌렸을 때)
             # 키를 누르고있는 상태 : True
             # 키를 떼고있는 상태 : False
@@ -508,7 +510,7 @@ while not SB:
 
 
     # 미사일의 발생 빈도 조절
-    Speed.k += 1
+    Speed.k += Util.missile_rate
 
     # 피사체의 리스트를 초기화함
     # delete list
@@ -538,7 +540,7 @@ while not SB:
     if random.random() > Speed.create_rate_c - (Util.score//Util.score_100)/Util.score_100:
         # 피사체 객체 생성
         aa = obj()
-        aa.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+        aa.put_img("SourceCode/Image/penguin2-removebg-preview.png")
         # 피사체의 그림 크기 조정
         random_size = random.randint(Size.min_size,Size.max_size)
         # print("Size.min_size : {} Size.max_size : {} ss.x : {} ss.y : {} ss.sx : {} ss.sy : {} size : {} aa.sx : {} aa.sy : {}".format(Size.min_size, Size.max_size,ss.x,ss.y,ss.sx,ss.sy,size,aa.sx,aa.sy))
@@ -593,7 +595,7 @@ while not SB:
     for d in d_list:
         del Util.a_list[d]
         # 외계인이 화면 밖으로 나간 횟수
-        Util.loss += 1
+        Util.loss += Util.obj_num
 
     dm_list = []
     da_list = []
@@ -626,7 +628,7 @@ while not SB:
             # 피사체 사망시 효과음
             monster1.play()
             # 피사체를 파괴한 횟수
-            Util.kill += 1
+            Util.kill += Util.obj_num
     except :
         pass
 
@@ -639,11 +641,11 @@ while not SB:
             # 부딛칠 때 효과음
             boom1.play()
             # 1초뒤에 꺼지도록 함
-            time.sleep(1)
+            time.sleep(Util.sleep_time)
             # while 문이 종료되도록 하는 key
-            SB = 1
+            SB = True
             # Go 가 0 인상태로 while문을 빠져나왔다면 x버튼으로 빠져나온것
-            Util.GO = 1
+            Util.GO = True
 
 
     for i in range(len(Util.block_list)):
@@ -652,21 +654,21 @@ while not SB:
         if crash2(b,ss) is True:
             # 부딛칠 때 효과음
             boom1.play()
-            time.sleep(1)
+            time.sleep(Util.sleep_time)
             # while문 종료 키 
-            SB =1
-            Util.GO = 1
+            SB = True
+            Util.GO = True
 
 
     # score 가 0 점이 되면 프로그램 종료
     if Util.score < 0:
-        SB = 1
+        SB = True
     
 
 
     # 4-4. 그리기 
     #  마우스에의해 창크기가 바뀜에 따라 배경화면 크기가 바뀜
-    background_image_desert = pygame.image.load("SourceCode/Image/DESERT.jpeg")
+    background_image_desert = pygame.image.load("SourceCode/Image/Antartic.png")
     background_image_desert = pygame.transform.scale(background_image_desert, size)
     screen.blit(background_image_desert, Util.start_loc)
     
@@ -680,7 +682,7 @@ while not SB:
     for a in Util.a_list:
         # print(a.sx,a.sy)
         if (a.sx > Size.err_x) or (a.sy > Size.err_y):
-            a.put_img("SourceCode/Image/scorphion1-removebg-preview.png")
+            a.put_img("SourceCode/Image/penguin2-removebg-preview.png")
             a.change_size(Size.standard_size,Size.standard_size)
         a.show()
     # 선인장 장애물 보여주기
@@ -713,7 +715,7 @@ while Util.GO:
 
     for event in pygame.event.get(): # 이벤트가 있다면 
         if event.type == pygame.QUIT:
-            Util.GO=0
+            Util.GO = False
         if event.type == pygame.VIDEORESIZE:
             width, height = event.w, event.h
             Size.x_resize_rate = width / size[0]
