@@ -4,10 +4,11 @@ import time
 from datetime import datetime
 import pygame_menu 
 from os import system
-
+w_init = 1/2
+h_init = 8/9
 pygame.init()
 infoObject = pygame.display.Info()
-size = [infoObject.current_w//2,infoObject.current_h*8//9]
+size = [int(infoObject.current_w*w_init),int(infoObject.current_h*h_init)]
 screen = pygame.display.set_mode(size,pygame.RESIZABLE)
 def show_mode():
     menu.clear()
@@ -46,5 +47,8 @@ def start_the_game_1():
     import Oasis
 def start_the_game_2():
     import Ice
+def start_the_game_3():
+    # import School
+    pass
 menu.mainloop(screen) 
 pygame.quit()
