@@ -2,7 +2,7 @@ import pygame
 import random
 import time
 from datetime import datetime
-import pygame_menu 
+import pygame_menu
 from os import system
 w_init = 1/2
 h_init = 8/9
@@ -28,6 +28,7 @@ def help():
     menu.clear()
 
 def show_help():
+    menu.add.button('Back', back)
     menu.add.image(image_path='SourceCode/Image/howtoplay.png', angle=0, scale=(0.5, 0.5))
 
 menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
