@@ -17,7 +17,6 @@ def show_mode():
     menu.clear()
     menu.add.button('Oasis',start_the_game_1)
     menu.add.button('Ice',start_the_game_2)
-    menu.add.button('School')
     menu.add.button('Back', back)
     menu.add.button('Quit', pygame_menu.events.EXIT)
 
@@ -53,8 +52,6 @@ def start_the_game_1():
     import Oasis
 def start_the_game_2():
     import Ice
-def start_the_game_3():
-    # import School
-    pass
+
 menu.mainloop(screen) 
 pygame.quit()
