@@ -7,6 +7,8 @@ from os import system
 class Display:
     w_init = 1/2
     h_init = 8/9
+    angle = 0
+    help_scale = (0.4,0.4) 
 pygame.init()
 infoObject = pygame.display.Info()
 size = [int(infoObject.current_w*Display.w_init),int(infoObject.current_h*Display.h_init)]
@@ -24,7 +26,7 @@ def back():
     
     menu.add.button('Select mode', show_mode)
     menu.add.button('Option', show_option)
-    menu.add.button('Help')
+    menu.add.button('Help',show_help)
     menu.add.button('Quit', pygame_menu.events.EXIT)
 
 def help():
@@ -35,6 +37,8 @@ def show_option():
     menu.add.button('Sound') 
     menu.add.button('Back', back)
     menu.add.button('Quit',pygame_menu.events.EXIT)
+def show_help():
+    menu.add.image(image_path='SourceCode/Image/howtoplay.png', angle=Display.angle, scale=Display.help_scale)
 menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
 mytheme = pygame_menu.themes.THEME_ORANGE.copy()
 mytheme.background_color = menu_image 
@@ -44,6 +48,7 @@ menu.add.button('Option',show_option)
 menu.add.button('Help')
 menu.add.button('Quit',pygame_menu.events.EXIT)
 background = pygame.image.load("SourceCode/Image/StartImage.png")
+
 def start_the_game_1():
     import Oasis
 def start_the_game_2():
