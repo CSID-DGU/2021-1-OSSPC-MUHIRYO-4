@@ -4,11 +4,12 @@ import time
 from datetime import datetime
 import pygame_menu 
 from os import system
-w_init = 1/2
-h_init = 8/9
+class Display:
+    w_init = 1/2
+    h_init = 8/9
 pygame.init()
 infoObject = pygame.display.Info()
-size = [int(infoObject.current_w*w_init),int(infoObject.current_h*h_init)]
+size = [int(infoObject.current_w*Display.w_init),int(infoObject.current_h*Display.h_init)]
 screen = pygame.display.set_mode(size,pygame.RESIZABLE)
 def show_mode():
     menu.clear()
