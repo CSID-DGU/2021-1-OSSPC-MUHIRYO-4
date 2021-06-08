@@ -51,13 +51,13 @@ class Color:
 
 class Size:
     # 피사체의 x,y사이즈
-    a_xsize = size[0]//18
-    a_ysize = size[1]//13
+    a_xsize = size[0]//13
+    a_ysize = size[1]//8
     # 미사일의 x,y사이즈
     m_xsize = size[0]//30
     m_ysize = size[1]//20
     # 미사일의 크기 조정(최대값, 최소값)
-    min_size = ceil((sum(size)//40))
+    min_size = ceil((sum(size)//35))
     max_size = ceil((sum(size)//20))
     block_max_size = size[0]//10
     # 2등분 3등분 값을 찾기위한 num
@@ -159,12 +159,12 @@ class Sound:
     background_sound = 0.3
 
 class Resizing:
-    a_xsize = 18
-    a_ysize = 13
+    a_xsize = 13
+    a_ysize = 8
     m_xsize = 30
     m_ysize = 20
 
-    min_size_rel = 40
+    min_size_rel = 35
     max_size_rel = 20
     min_size =  1
     max_size =  1
@@ -345,7 +345,7 @@ def change_size_rate(size):
 # 객체 생성
 ss = obj()
 # 우리들이 움직여야할 물체
-ss.put_img("SourceCode/Image/DesertLV1Car-removebg-preview.png")
+ss.put_img("SourceCode/Image/santa.png")
 # 그림(비행체)의 크기를 조정
 ss.change_size(Size.a_xsize,Size.a_ysize)
 # 비행체의 위치를 하단의 중앙으로 바꾸기위해!
@@ -475,7 +475,7 @@ while not SB:
         # 미사일 객체 생성
         mm = obj()
         # 미사일의 사진
-        mm.put_img('SourceCode/Image/MISSILE_2.png')
+        mm.put_img('SourceCode/Image/ice_missile.png')
         # 미사일의 크기 조정
         # m_xsize = 5, m_ysize = 15
         mm.change_size(Size.m_xsize,Size.m_ysize)
@@ -507,7 +507,7 @@ while not SB:
         missile1.stop()
         missile2.play()
         mm2 = obj()
-        mm2.put_img('SourceCode/Image/MISSILE_2.png')
+        mm2.put_img('SourceCode/Image/ice_missile.png')
         mm2.change_size(Size.m_xsize, Size.m_ysize)
         mm2.x = round(ss.x +(ss.sx * Size.half_split_num) / Size.third_split_num - mm.sx / Size.half_split_num)
         mm2.y = ss.y - mm2.sy - Util.m_loc_10
@@ -565,7 +565,7 @@ while not SB:
     if random.random() > Speed.create_rate_r:
         # 장애물 객체 생성
         block = obj()
-        block.put_img('SourceCode/Image/CATUS.png')
+        block.put_img('SourceCode/Image/ship.png')
         random_size = random.randint(Size.min_size,Size.block_max_size)
         block.change_size(random_size, random_size)
         # block.change_size(Size.block_size, Size.block_size)

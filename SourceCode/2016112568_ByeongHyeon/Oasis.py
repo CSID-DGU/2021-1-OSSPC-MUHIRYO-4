@@ -34,7 +34,7 @@ class Move:
     # 미사일 발사 키
     space_go = False
     # 게임의 FPS
-    FPS = 70
+    FPS = 60
     # 객체의 변경된 위치변경의 Key
     position = False
     # 객체들이 화면 밖으로 나갔는지 판정에 필요한 boundary 값
