@@ -22,7 +22,6 @@ def show_mode():
 
 def back():
     menu.clear()
-    
     menu.add.button('Select mode', show_mode)
     menu.add.button('Option', show_option)
     menu.add.button('Help',show_help)
