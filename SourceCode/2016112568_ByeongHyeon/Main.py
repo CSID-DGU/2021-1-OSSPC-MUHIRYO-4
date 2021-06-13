@@ -9,6 +9,9 @@ class Display:
     h_init = 8/9
     angle = 0
     help_scale = (0.4,0.4) 
+class Utillization:
+    x = 0
+    y = 1
 pygame.init()
 infoObject = pygame.display.Info()
 size = [int(infoObject.current_w*Display.w_init),int(infoObject.current_h*Display.h_init)]
@@ -22,6 +25,7 @@ def show_mode():
 
 def back():
     menu.clear()
+    
     menu.add.button('Select mode', show_mode)
     menu.add.button('Option', show_option)
     menu.add.button('Help',show_help)
@@ -40,7 +44,7 @@ def show_help():
 menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
 mytheme = pygame_menu.themes.THEME_ORANGE.copy()
 mytheme.background_color = menu_image 
-menu = pygame_menu.Menu('MUHIRRYO GOOD', size[0], size[1], theme=mytheme)
+menu = pygame_menu.Menu('MUHIRRYO GOOD', size[Utillization.x], size[Utillization.y], theme=mytheme)
 menu.add.button('Select mode', show_mode)
 menu.add.button('Option',show_option)
 menu.add.button('Help')
