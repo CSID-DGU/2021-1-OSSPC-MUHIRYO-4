@@ -25,29 +25,24 @@ def show_mode():
 
 def back():
     menu.clear()
-    
     menu.add.button('Select mode', show_mode)
-    menu.add.button('Option', show_option)
     menu.add.button('Help',show_help)
     menu.add.button('Quit', pygame_menu.events.EXIT)
 
 def help():
     menu.clear()
 
-def show_option():
-    menu.clear()
-    menu.add.button('Sound') 
-    menu.add.button('Back', back)
-    menu.add.button('Quit',pygame_menu.events.EXIT)
 def show_help():
+    menu.clear()
+    menu.add.button('Back',back)
     menu.add.image(image_path='SourceCode/Image/howtoplay.png', angle=Display.angle, scale=Display.help_scale)
+
 menu_image = pygame_menu.baseimage.BaseImage(image_path='SourceCode/Image/StartImage.png',drawing_mode=pygame_menu.baseimage.IMAGE_MODE_FILL)
 mytheme = pygame_menu.themes.THEME_ORANGE.copy()
 mytheme.background_color = menu_image 
 menu = pygame_menu.Menu('MUHIRRYO GOOD', size[Utillization.x], size[Utillization.y], theme=mytheme)
 menu.add.button('Select mode', show_mode)
-menu.add.button('Option',show_option)
-menu.add.button('Help')
+menu.add.button('Help',show_help)
 menu.add.button('Quit',pygame_menu.events.EXIT)
 background = pygame.image.load("SourceCode/Image/StartImage.png")
 
