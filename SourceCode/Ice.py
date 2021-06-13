@@ -211,7 +211,7 @@ pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 clock = pygame.time.Clock()
 #파이게임 배경음악
 pygame.mixer.init()
-pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
+pygame.mixer.music.load("SourceCode/Sound/Rien.mp3")
 # 미사일 효과음
 missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound8.ogg")
 missile1.set_volume(Sound.m_sound)
