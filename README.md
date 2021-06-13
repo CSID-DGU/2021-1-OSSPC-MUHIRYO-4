@@ -17,7 +17,18 @@
 
 ### 게임 소개
 * 시작화면
+
 ![image](https://github.com/CSID-DGU/2021-1-OSSPC-MUHIRYO-4/blob/main/SourceCode/Image/startimg.PNG)
+  * **Menu**
+    * **Select Mode**
+
+      ![image](https://github.com/CSID-DGU/2021-1-OSSPC-MUHIRYO-4/blob/main/SourceCode/Image/selectmode.PNG)
+    * **Help**
+       ![image](https://github.com/CSID-DGU/2021-1-OSSPC-MUHIRYO-4/blob/main/SourceCode/Image/howtoplay.png)
+게임 방법을 설명해주는 이미지가 나옵니다. 키보드 상, 하, 좌, 우로 비행체를 조작할 수 있고 8방향 이동이 가능하며 스페이스바를 누를 시 미사일이 발사 됩니다.
+    * **Quit**
+      
+      게임종료 버튼
 [게임영상 다운로드](https://github.com/CSID-DGU/2021-1-OSSPC-MUHIRYO-4/blob/main/SourceCode/Image/gameplay.mp4)
 
 
