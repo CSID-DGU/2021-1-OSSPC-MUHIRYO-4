@@ -152,11 +152,11 @@ class FontSize:
 
 
 class Sound:
-    m_sound = 0.2
-    crash1_sound = 0.3
-    crash2_sound = 0.2
+    m_sound = 0.1
+    crash1_sound = 0.1
+    crash2_sound = 0.1
     game_over_sound = 0.3
-    background_sound = 0.3
+    background_sound = 0.1
 
 class Resizing:
     a_xsize = 13
@@ -211,7 +211,7 @@ pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 clock = pygame.time.Clock()
 #파이게임 배경음악
 pygame.mixer.init()
-pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
+pygame.mixer.music.load("SourceCode/Sound/Rien.mp3")
 # 미사일 효과음
 missile1 = pygame.mixer.Sound("SourceCode/Sound/present1.mp3")
 missile1.set_volume(Sound.m_sound)
