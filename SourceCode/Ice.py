@@ -213,17 +213,17 @@ clock = pygame.time.Clock()
 pygame.mixer.init()
 pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 # 미사일 효과음
-missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound8.ogg")
+missile1 = pygame.mixer.Sound("SourceCode/Sound/present1.mp3")
 missile1.set_volume(Sound.m_sound)
-missile2 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
+missile2 = pygame.mixer.Sound("SourceCode/Sound/present2.mp3")
 missile2.set_volume(Sound.m_sound)
-missile3 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound16.ogg")
+missile3 = pygame.mixer.Sound("SourceCode/Sound/present4.mp3")
 missile3.set_volume(Sound.m_sound)
 # 피사체 파괴시 효과음
-monster1 = pygame.mixer.Sound("SourceCode/Sound/monster-sound7.ogg")
-monster1.set_volume(Sound.crash1_sound)
+penguin = pygame.mixer.Sound("SourceCode/Sound/penguin.mp3")
+penguin.set_volume(Sound.crash1_sound)
 # 피사체와 비행체 충돌시 효과음
-boom1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound9 .ogg")
+boom1 = pygame.mixer.Sound("SourceCode/Sound/puck.mp3")
 boom1.set_volume(Sound.crash2_sound)
 # 게임오버 효과음
 game_over = pygame.mixer.Sound("SourceCode/Sound/gameover.wav")
@@ -632,7 +632,7 @@ while not SB:
         for da in da_list:
             del Util.a_list[da]
             # 피사체 사망시 효과음
-            monster1.play()
+            penguin.play()
             # 피사체를 파괴한 횟수
             Util.kill += Util.obj_num
     except :
