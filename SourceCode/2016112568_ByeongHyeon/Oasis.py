@@ -675,6 +675,7 @@ while not SB:
     # score 가 0 점이 되면 프로그램 종료
     if Util.score < Util.end_point:
         SB = True
+        Util.GO = True
     
 
 

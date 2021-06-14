@@ -211,7 +211,7 @@ pygame.display.set_caption(title) # 창의 제목 표시줄 옵션
 clock = pygame.time.Clock()
 #파이게임 배경음악
 pygame.mixer.init()
-pygame.mixer.music.load("SourceCode/Sound/Rien.mp3")
+pygame.mixer.music.load("SourceCode/Sound/ariant.mp3")
 # 미사일 효과음
 missile1 = pygame.mixer.Sound("SourceCode/Sound/weapon-sound8.ogg")
 missile1.set_volume(Sound.m_sound)
@@ -285,7 +285,7 @@ def change_size_rate(size):
     #     ss.y = size[1] - ss.sy
     # 비행체 객체의 사이즈 변경
     try:
-        ss.put_img("SourceCode/Image/DesertLV1Car-removebg-preview.png")
+        ss.put_img("SourceCode/Image/santa.png")
         ss.change_size(Size.a_xsize, Size.a_ysize)
         ss.x*=Size.x_resize_rate
         ss.y*=Size.y_resize_rate
@@ -669,6 +669,7 @@ while not SB:
     # score 가 0 점이 되면 프로그램 종료
     if Util.score < 0:
         SB = True
+        Util.GO = True
     
 
 
