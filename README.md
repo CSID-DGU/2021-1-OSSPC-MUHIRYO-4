@@ -3,7 +3,7 @@
 
 ### Info
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://www.olis.or.kr/license/Detailselect.do?lId=1006)
-![badges](https://img.shields.io/badge/OS-ubuntu-red)
+![badges](https://img.shields.io/badge/OS-ubuntu,MacOs-red)
 ![Laguage](https://img.shields.io/badge/python-3.6.1-blue.svg)
 ![Laguage](https://img.shields.io/badge/pygame-2.0.1-lightgreen.svg)
 ![badges](https://img.shields.io/badge/pygame_menu-3.3.0-black) 
